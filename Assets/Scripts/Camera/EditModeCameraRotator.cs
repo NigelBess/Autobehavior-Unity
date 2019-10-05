@@ -13,7 +13,11 @@ public class EditModeCameraRotator : MonoBehaviour
     }
     private void Update()
     {
-        if (Application.isPlaying) return;
+        if (Application.isPlaying)
+        {
+            enabled = false;
+            return;
+        } 
         ApplyRotation();
     }
     private void ApplyRotation()
