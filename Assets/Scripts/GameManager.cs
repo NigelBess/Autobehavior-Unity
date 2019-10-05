@@ -12,6 +12,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CanvasManager cm;
     [SerializeField] private InputFields welcomeFields;
     [SerializeField] private Text welcomeErrorText;
+    [SerializeField] private ObjectEnabler enabler;
+    private int numTrials;
+    private int currentTrialNumber;
+    private const float controlPauseTime = 1f;
     private void Awake()
     {
         camControl.enabled = false;
@@ -24,6 +28,7 @@ public class GameManager : MonoBehaviour
         {
 
             welcomeFields.Save();
+            numTrials = int.Parse(SessionData.numTrials);
             if (SessionData.mouseID == "0")
             {
                 io = keyboard;
@@ -43,9 +48,21 @@ public class GameManager : MonoBehaviour
         }
 
         cm.HUD();
+        SetState(true);
         }
     private void WelcomeError(string message)
     {
         welcomeErrorText.text = message;
+    }
+    private void SetState(bool running)
+    {
+        if (running)
+        {
+            enabler.DisableForSeconds(camControl, controlPauseTime);
+        }
+        else
+        {
+
+        }
     }
 }
