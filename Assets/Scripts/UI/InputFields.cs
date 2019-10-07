@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class InputFields : MonoBehaviour
 {
     protected InputField[] inputFields;
-    [SerializeField] private DataLogger dataLogger;
     [SerializeField] private string fileName;
 
     void Awake()
@@ -17,7 +16,7 @@ public class InputFields : MonoBehaviour
     {
         try
         {
-            string[] fieldContents = dataLogger.ReadArray(fileName);
+            string[] fieldContents = DataLogger.ReadArray(fileName);
             for (int i = 0; i < inputFields.Length; i++)
             {
                 if (i < fieldContents.Length) inputFields[i].text = fieldContents[i];
@@ -32,7 +31,7 @@ public class InputFields : MonoBehaviour
     {
         for (int i = 0; i < inputFields.Length; i++)
         {
-            dataLogger.Save(fileName, inputFields[i].text, i > 0);
+            DataLogger.Save(fileName, inputFields[i].text, i > 0);
         }
     }
 }

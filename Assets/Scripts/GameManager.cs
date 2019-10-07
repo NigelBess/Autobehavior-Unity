@@ -9,19 +9,25 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GratedCircle gratedCircle;
     [SerializeField] private IODevice keyboard;
     [SerializeField] private ArduinoIO arduinoIO;
+    [SerializeField] private GameObject coverPanel;
+    [SerializeField] private GameObject environment;
     private IODevice io;
     [SerializeField] private CanvasManager cm;
     [SerializeField] private InputFields welcomeFields;
     [SerializeField] private Text welcomeErrorText;
-    [SerializeField] private ObjectEnabler enabler;
+    private bool selfEnabled = true;
     private int numTrials;
     private int currentTrialNumber;
     private const float controlPauseTime = 1f;
+    private const float successPauseTime = 2f;
+    private bool waitingForIR;
+
     private void Awake()
     {
-        camControl.enabled = false;
         WelcomeError("");
         cm.Welcome();
+        SetState(false);
+        selfEnabled = false;
     }
     public void StartGame()
     {
@@ -30,6 +36,10 @@ public class GameManager : MonoBehaviour
 
             welcomeFields.Save();
             numTrials = int.Parse(SessionData.numTrials);
+            Results.Malloc(numTrials,SessionData.saveDirectory);
+            bool natBackground = int.Parse(SessionData.naturalisticBackground) > 0;
+            coverPanel.SetActive(!natBackground);
+            environment.SetActive(natBackground);
             if (SessionData.mouseID == "0")
             {
                 io = keyboard;
@@ -49,23 +59,100 @@ public class GameManager : MonoBehaviour
         }
 
         cm.HUD();
-        gratedCircle.Reset(1);
-        SetState(true);
+        SetState(false);
+        WaitForIR();
+        selfEnabled = true;
+    }
+    private void Update()
+    {
+        if (!selfEnabled) return;
+        if (waitingForIR)
+        {
+            if (io.ReadIR())
+            {
+                waitingForIR = false;
+                StartTrial();
+            }
+            return;
         }
+        if(gratedCircle.AtCenter())
+        {
+            Success();
+        }
+    }
+    private void WaitForIR()
+    {
+        waitingForIR = true;
+    }
     private void WelcomeError(string message)
     {
         welcomeErrorText.text = message;
     }
+    private void StartTrial()
+    {
+        StopAllCoroutines();
+        SetState(true);
+        int side = ChooseSide();
+        gratedCircle.Reset(side);
+    }
+    private int ChooseSide()
+    {
+        return 1;
+    }
+
     private void SetState(bool running)
     {
         if (running)
         {
-            enabler.DisableForSeconds(camControl, controlPauseTime + io.EstimatedServoCloseTime());
+            DisableForSeconds(camControl, controlPauseTime + io.EstimatedServoCloseTime());
         }
         else
         {
-
+            camControl.enabled = false;
         }
-        gratedCircle.enabled = running;
+        gratedCircle.gameObject.SetActive(running);
+        Debug.Log("setstate " + running);
+    }
+    private void Success()
+    {
+        StopAllCoroutines();
+        camControl.SnapTo(gratedCircle.GetWorldPos());
+        camControl.enabled = false;
+        io.CloseServos();
+        DisableForSeconds(successPauseTime);
+        StartCoroutine(WaitThenEndTrial(successPauseTime));
+
+    }
+    IEnumerator WaitThenEndTrial(float time)
+    {
+        yield return new WaitForSeconds(time);
+        EndTrial();
+    }
+    private void EndTrial()
+    {
+        StopAllCoroutines();
+        Debug.Log("trial ended");
+        SetState(false);
+        WaitForIR();
+    }
+    private void DisableForSeconds(MonoBehaviour obj, float time)
+    {
+        obj.enabled = false;
+        StartCoroutine(EnableObject(obj, time));
+    }
+    IEnumerator EnableObject(MonoBehaviour obj, float time)
+    {
+        yield return new WaitForSeconds(time);
+        obj.enabled = true;
+    }
+    private void DisableForSeconds(float time)
+    {
+        selfEnabled = false;
+        StartCoroutine(EnableObject(time));
+    }
+    IEnumerator EnableObject(float time)
+    {
+        yield return new WaitForSeconds(time);
+        selfEnabled = true;
     }
 }

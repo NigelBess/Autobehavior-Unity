@@ -35,4 +35,9 @@ public class GameFunctions : MonoBehaviour
         plane.Raycast(ray, out enter);
         return ray.GetPoint(enter);
     }
+    public static int BoolToInt(bool val)
+    {
+        if (val) return 1;
+        return 0;
+    }
 }

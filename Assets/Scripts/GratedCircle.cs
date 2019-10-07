@@ -5,6 +5,7 @@ using UnityEngine;
 public class GratedCircle : MonoBehaviour
 {
     [SerializeField] private float simulatedDistance = 0.1f;
+    [SerializeField] private int pixelThresholdFromCenter = 20;
     RectTransform rt;
     private Vector3 worldPoint;
     private float originalHeight;
@@ -43,4 +44,12 @@ public class GratedCircle : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.U)) Reset(1);
     }
 
+    public bool AtCenter()
+    {
+        return Mathf.Abs((transform.position.x - Screen.width / 2)) < pixelThresholdFromCenter;
+    }
+    public Vector3 GetWorldPos()
+    {
+        return worldPoint;
+    }
 }

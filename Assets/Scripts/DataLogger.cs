@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class DataLogger : MonoBehaviour
+public class DataLogger
 {
-    [SerializeField] private string directory = "data";
-    public void Save(string fileName, string data, bool append)
+    public static void Save(string fileName, string data, bool append)
     {
-        string path = Path();
-        if (!Directory.Exists(path))
+        Save(fileName, data, append, Application.persistentDataPath);
+    }
+    public static void Save(string fileName, string data, bool append,string directory)
+    {
+        if (!Directory.Exists(directory))
         {
-            Directory.CreateDirectory(path);
+            Directory.CreateDirectory(directory);
         }
-        path += "/" + fileName + ".csv";
+        string path = directory + "/" + fileName + ".csv";
         if (!File.Exists(path))
         {
             FileStream file = File.Create(path);
@@ -24,19 +26,26 @@ public class DataLogger : MonoBehaviour
             writer.WriteLine(data+",");
         }
     }
-    public string Read(string fileName)
+    public static string Read(string fileName)
     {
-        string path = Path();
-        path += "/" + fileName + ".csv";
+        return Read(fileName, Application.persistentDataPath);
+    }
+    public static string Read(string fileName,string directory)
+    {
+        string path = directory+ "/" + fileName + ".csv";
         if (!File.Exists(path))
         {
             throw new System.IO.FileNotFoundException("Attempting to read a file that does not exist.");
         }
         return File.ReadAllText(path);
     }
-    public string[] ReadArray(string fileName)
+    public static string[] ReadArray(string fileName)
     {
-        string contents = Read(fileName);
+        return ReadArray(fileName,Application.persistentDataPath);
+    }
+    public static string[] ReadArray(string fileName,string path)
+    {
+        string contents = Read(fileName,path);
         string[] separated = contents.Split(',');
         for (int i = 0; i < separated.Length; i++)
         {
@@ -44,8 +53,5 @@ public class DataLogger : MonoBehaviour
         }
         return separated;
     }
-    private string Path()
-    {
-        return Application.persistentDataPath + "/" + directory;
-    }
+
 }
