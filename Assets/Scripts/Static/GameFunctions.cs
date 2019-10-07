@@ -29,4 +29,10 @@ public class GameFunctions : MonoBehaviour
         }
         Debug.Log(str);
     }
+    public static Vector3 RayToPlanePoint(Ray ray, Plane plane)
+    {
+        float enter;
+        plane.Raycast(ray, out enter);
+        return ray.GetPoint(enter);
+    }
 }

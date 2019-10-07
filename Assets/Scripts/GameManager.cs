@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private CameraController camControl;
+    [SerializeField] private GratedCircle gratedCircle;
     [SerializeField] private IODevice keyboard;
     [SerializeField] private ArduinoIO arduinoIO;
     private IODevice io;
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
         }
 
         cm.HUD();
+        gratedCircle.Reset(1);
         SetState(true);
         }
     private void WelcomeError(string message)
@@ -58,11 +60,12 @@ public class GameManager : MonoBehaviour
     {
         if (running)
         {
-            enabler.DisableForSeconds(camControl, controlPauseTime);
+            enabler.DisableForSeconds(camControl, controlPauseTime + io.EstimatedServoCloseTime());
         }
         else
         {
 
         }
+        gratedCircle.enabled = running;
     }
 }

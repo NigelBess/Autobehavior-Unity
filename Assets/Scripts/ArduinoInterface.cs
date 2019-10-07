@@ -22,7 +22,7 @@ public class ArduinoInterface : MonoBehaviour
     }
     private void OnApplicationQuit()
     {
-        port.DtrEnable = true;
+        if (port!=null)  port.DtrEnable = true;
     }
     public void Connect()
     {
@@ -115,13 +115,40 @@ public class ArduinoInterface : MonoBehaviour
         port.DiscardInBuffer();
         return output;
     }
-    public byte[] AttachServo(int pin)
+    public void PinMode(int pin, int mode)
     {
-        return SendMessageReliable(new byte[2] {5, (byte)pin});
+        SendMessageReliable(new byte[3] {0, (byte)pin, (byte)mode });
     }
-    public byte[] WriteServo(int pin, int angle)
+    public void DigitalWrite(int pin, int state)
     {
-        return SendMessageReliable(new byte[3] { 6, (byte)pin, (byte)angle });
+        SendMessageReliable(new byte[3] { 1, (byte)pin, (byte)state });
+    }
+    public void AnalogWrite(int pin, int state)
+    {
+        SendMessageReliable(new byte[3] { 2, (byte)pin, (byte)state });
+    }
+    public bool DigitalRead(int pin)
+    {
+        byte[] response = SendMessageReliable(new byte[2] { 3, (byte)pin});
+        return (response[1] > 0);
+    }
+    public float AnalogRead(int pin)
+    {
+        byte[] response = SendMessageReliable(new byte[2] { 4, (byte)pin });
+        float outVar = 0;
+        for (int i = 1; i < response.Length; i++)
+        {
+            outVar += Mathf.Pow(2, i - 1) * response[i];
+        }
+        return outVar;
+    }
+    public void AttachServo(int pin)
+    {
+        SendMessageReliable(new byte[2] {5, (byte)pin});
+    }
+    public void WriteServo(int pin, int angle)
+    {
+        SendMessageReliable(new byte[3] { 6, (byte)pin, (byte)angle });
     }
 
 }

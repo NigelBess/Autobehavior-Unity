@@ -6,4 +6,8 @@ using UnityEngine;
 public abstract class IODevice : MonoBehaviour
 {
     public abstract int ReadJoystick();
+    public abstract float EstimatedServoCloseTime();
+    public abstract void CloseServos();
+    public abstract void OpenServos();
+    public abstract bool ReadIR();
 }
