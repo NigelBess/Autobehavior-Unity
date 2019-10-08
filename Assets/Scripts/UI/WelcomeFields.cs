@@ -23,6 +23,7 @@ public class WelcomeFields : InputFields
         SessionData.mouseID = mouseIDField.text;
         SessionData.rig = rigField.text;
         SessionData.numTrials = numTrialsField.text;
+        SessionData.sessionNumber = sessionField.text;
         SessionData.port = portField.text;
         SessionData.naturalisticBackground = naturalisticBackgroundField.text;
         SessionData.rewardOnIncorrect = rewardOnIncorrectField.text;

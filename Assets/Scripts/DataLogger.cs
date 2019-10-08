@@ -3,49 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class DataLogger
+public static class DataLogger
 {
-    public static void Save(string fileName, string data, bool append)
+
+    public static void Save(Path path, string data, bool append)
     {
-        Save(fileName, data, append, Application.persistentDataPath);
-    }
-    public static void Save(string fileName, string data, bool append,string directory)
-    {
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
-        string path = directory + "/" + fileName + ".csv";
-        if (!File.Exists(path))
-        {
-            FileStream file = File.Create(path);
-            file.Close();
-        }
-        using (TextWriter writer = new StreamWriter(path, append: append))
+        path.Create();
+        using (TextWriter writer = new StreamWriter(path.ToString(), append: append))
         {
             writer.WriteLine(data+",");
         }
     }
-    public static string Read(string fileName)
+
+    public static string Read(Path path)
     {
-        return Read(fileName, Application.persistentDataPath);
-    }
-    public static string Read(string fileName,string directory)
-    {
-        string path = directory+ "/" + fileName + ".csv";
-        if (!File.Exists(path))
+        if (!path.Exists())
         {
             throw new System.IO.FileNotFoundException("Attempting to read a file that does not exist.");
         }
-        return File.ReadAllText(path);
+        return File.ReadAllText(path.ToString());
     }
-    public static string[] ReadArray(string fileName)
+    public static string[] ReadArray(Path path)
     {
-        return ReadArray(fileName,Application.persistentDataPath);
-    }
-    public static string[] ReadArray(string fileName,string path)
-    {
-        string contents = Read(fileName,path);
+        string contents = Read(path);
         string[] separated = contents.Split(',');
         for (int i = 0; i < separated.Length; i++)
         {
@@ -53,5 +33,60 @@ public class DataLogger
         }
         return separated;
     }
+    public class Path
+    {
+        private const string defaultExtension = "csv";
+        public string fileName = "";
+        public string extension = "";
+        public string directory = "";
+        public Path(string directory,string fileName, string extension)
+        {
+            Initialize(fileName, extension, directory);
+        }
+        public Path(string fileName, string extension)
+        {
+            Initialize(fileName, extension, Application.persistentDataPath);
+        }
+        public Path(string fileName)
+        {
+            Initialize(fileName, defaultExtension, Application.persistentDataPath);
+        }
 
+        private void Initialize(string fileName, string extension, string directory)
+        {
+            this.fileName = fileName;
+            this.extension = extension;
+            this.directory = directory;
+        }
+        public void Create()
+        {
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            string path = this.ToString();
+            if (!File.Exists(path))
+            {
+                FileStream file = File.Create(path);
+                file.Close();
+            }
+        }
+        public bool Exists()
+        {
+            if (!Directory.Exists(directory))
+            {
+                return false;
+            }
+            string path = this.ToString();
+            if (!File.Exists(path))
+            {
+                return false;
+            }
+            return true;
+        }
+        public override string ToString()
+        {
+            return directory + "/" + fileName + "." + extension;
+        }
+    }
 }

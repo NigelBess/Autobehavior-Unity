@@ -7,6 +7,7 @@ public class InputFields : MonoBehaviour
 {
     protected InputField[] inputFields;
     [SerializeField] private string fileName;
+    private DataLogger.Path path;
 
     void Awake()
     {
@@ -14,9 +15,10 @@ public class InputFields : MonoBehaviour
     }
     public void Load()
     {
+        if (path==null) path = new DataLogger.Path(fileName);
         try
         {
-            string[] fieldContents = DataLogger.ReadArray(fileName);
+            string[] fieldContents = DataLogger.ReadArray(path);
             for (int i = 0; i < inputFields.Length; i++)
             {
                 if (i < fieldContents.Length) inputFields[i].text = fieldContents[i];
@@ -29,9 +31,10 @@ public class InputFields : MonoBehaviour
     }
     public virtual void Save()
     {
+        if (path == null) path = new DataLogger.Path(fileName);
         for (int i = 0; i < inputFields.Length; i++)
         {
-            DataLogger.Save(fileName, inputFields[i].text, i > 0);
+            DataLogger.Save(path, inputFields[i].text, i > 0);
         }
     }
 }

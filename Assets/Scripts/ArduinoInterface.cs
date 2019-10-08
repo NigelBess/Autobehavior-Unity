@@ -12,6 +12,9 @@ public class ArduinoInterface : MonoBehaviour
     private const byte errorByte = 253;
     private const int readTimeout = 500;//ms
 
+    private const int maxAnalogRead = 1023;
+    private const float maxVoltage = 5f;
+
     private SerialPort port;
     public void SetPort(string nPortName)
     {
@@ -130,16 +133,12 @@ public class ArduinoInterface : MonoBehaviour
     public bool DigitalRead(int pin)
     {
         byte[] response = SendMessageReliable(new byte[2] { 3, (byte)pin});
-        return (response[1] > 0);
+        return (response[0] > 0);
     }
     public float AnalogRead(int pin)
     {
         byte[] response = SendMessageReliable(new byte[2] { 4, (byte)pin });
-        float outVar = 0;
-        for (int i = 1; i < response.Length; i++)
-        {
-            outVar += Mathf.Pow(2, i - 1) * response[i];
-        }
+        float outVar = maxVoltage*((float)ParseInt(response)) / ((float)maxAnalogRead);
         return outVar;
     }
     public void AttachServo(int pin)
@@ -149,6 +148,16 @@ public class ArduinoInterface : MonoBehaviour
     public void WriteServo(int pin, int angle)
     {
         SendMessageReliable(new byte[3] { 6, (byte)pin, (byte)angle });
+    }
+    private int ParseInt(byte[] response)
+    {
+        int outVar = 0;
+        for (int i = 1; i < response.Length; i++)
+        {
+            outVar += (int)Mathf.Pow(2, 7*(i - 1)) * response[i];
+        }
+        if (response[0] > 0) outVar *= -1;
+        return outVar;
     }
 
 }

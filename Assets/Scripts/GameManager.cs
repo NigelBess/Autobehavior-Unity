@@ -36,7 +36,9 @@ public class GameManager : MonoBehaviour
 
             welcomeFields.Save();
             numTrials = int.Parse(SessionData.numTrials);
-            Results.Malloc(numTrials,SessionData.saveDirectory);
+            Results.Malloc(numTrials);
+            Debug.Log(SessionData.sessionNumber);
+            Results.CreateSaveFile(SessionData.saveDirectory,SessionData.mouseID,int.Parse(SessionData.sessionNumber));
             bool natBackground = int.Parse(SessionData.naturalisticBackground) > 0;
             coverPanel.SetActive(!natBackground);
             environment.SetActive(natBackground);
@@ -54,7 +56,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            WelcomeError(e.Message);
+            WelcomeError(e);
             return;
         }
 
@@ -84,9 +86,13 @@ public class GameManager : MonoBehaviour
     {
         waitingForIR = true;
     }
-    private void WelcomeError(string message)
+    private void WelcomeError(System.Exception e)
     {
-        welcomeErrorText.text = message;
+        welcomeErrorText.text = e.Message;
+    }
+    private void WelcomeError(string msg)
+    {
+        welcomeErrorText.text = msg;
     }
     private void StartTrial()
     {
@@ -111,7 +117,7 @@ public class GameManager : MonoBehaviour
             camControl.enabled = false;
         }
         gratedCircle.gameObject.SetActive(running);
-        Debug.Log("setstate " + running);
+
     }
     private void Success()
     {
