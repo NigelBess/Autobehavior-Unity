@@ -16,7 +16,7 @@ public class GratedCircle : MonoBehaviour
     }
     public void Reset(int side)
     {
-        transform.position = new Vector2(Screen.width / 4 * Mathf.Sign(side),Screen.height/2);
+        transform.position = new Vector3(Screen.width / 4 * Mathf.Sign(side),Screen.height/2,0);
         worldPoint = GetWorldPoint();
         originalHeight = GetWorldHeight();
     }

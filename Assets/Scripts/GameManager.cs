@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
             welcomeFields.Save();
             numTrials = int.Parse(SessionData.numTrials);
             Results.Malloc(numTrials);
-            Debug.Log(SessionData.sessionNumber);
             Results.CreateSaveFile(SessionData.saveDirectory,SessionData.mouseID,int.Parse(SessionData.sessionNumber));
             bool natBackground = int.Parse(SessionData.naturalisticBackground) > 0;
             coverPanel.SetActive(!natBackground);
@@ -100,10 +99,15 @@ public class GameManager : MonoBehaviour
         SetState(true);
         int side = ChooseSide();
         gratedCircle.Reset(side);
+        Results.StartTrial(side,1);
     }
     private int ChooseSide()
     {
-        return 1;
+        float leftBias = Results.LeftProportionOnInterval(6);
+        Debug.Log(leftBias);
+        float rand = Random.Range(0f,1f);
+        if (rand > leftBias) return Globals.left;
+        return Globals.right;
     }
 
     private void SetState(bool running)
@@ -125,6 +129,7 @@ public class GameManager : MonoBehaviour
         camControl.SnapTo(gratedCircle.GetWorldPos());
         camControl.enabled = false;
         io.CloseServos();
+        Results.LogSuccess(io.ReadIR());
         DisableForSeconds(successPauseTime);
         StartCoroutine(WaitThenEndTrial(successPauseTime));
 
@@ -137,7 +142,6 @@ public class GameManager : MonoBehaviour
     private void EndTrial()
     {
         StopAllCoroutines();
-        Debug.Log("trial ended");
         SetState(false);
         WaitForIR();
     }

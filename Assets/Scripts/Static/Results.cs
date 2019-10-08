@@ -11,6 +11,10 @@ public static class Results
     public static void Malloc(int numTrials)
     {
         trials = new TrialData[numTrials];
+        for (int i = 0; i < numTrials; i++)
+        {
+            trials[i] = new TrialData();
+        }
         currentTrial = -1;
     }
     public static void CreateSaveFile(string directory, string mouseID, int sessionNum)
@@ -43,6 +47,14 @@ public static class Results
         t.stimPosition = stimPosition;
         t.opacity = opacity;
     }
+    public static void LogSuccess(bool irSensorState)
+    {
+        LogResponse(ThisTrial().stimPosition, irSensorState);
+    }
+    public static void LogFail(bool irSensorState)
+    {
+        LogResponse(ThisTrial().stimPosition * -1, irSensorState);
+    }
     public static void LogResponse(int side,bool irSensorState)
     {
         TrialData t = ThisTrial();
@@ -67,24 +79,35 @@ public static class Results
     }
     public static float TotalLeftBias()
     {
-        return LeftBias(TrialsWithResponse(CompletedTrials()));
+        return LeftBias(CompletedTrials());
     }
     public static float LeftBiasWithIR()
     {
-        return LeftBias(TrialsWithIR(TrialsWithResponse(CompletedTrials())));
+        return LeftBias(TrialsWithIR(CompletedTrials()));
+    }
+    public static float LeftProportionOnInterval(int numTrials)
+    {
+        if (currentTrial <= 0) return Random.Range(0f,1f);
+        return LeftBias(LastNTrials(numTrials,CompletedTrials()));
     }
     private static TrialData[] LastNTrials(int n,TrialData[] selectedTrials)
     {
+        if (selectedTrials.Length < n) n = selectedTrials.Length;
         TrialData[] outVar = new TrialData[n];
-        for (int i = n - 1; i >= 0; i--)
+        if (n == 0) return outVar;
+        for (int i = 0; i < n; i++)
         {
-            outVar[n - i] = selectedTrials[selectedTrials.Length - i];
+            outVar[n - 1- i] = selectedTrials[selectedTrials.Length - 1 - i];
         }
         return outVar;
     }
    
     private static TrialData[] CompletedTrials()
     {
+        if (currentTrial <= 0)
+        {
+            return new TrialData[0];
+        }
         TrialData[] outVar = new TrialData[currentTrial];
         for (int i = 0; i < currentTrial; i++)
         {
@@ -161,11 +184,12 @@ public static class Results
     private static float LeftBias(TrialData[] selectedTrials)
     {
         int left = 0;
-        for (int i = 0; i < selectedTrials.Length; i++)
+        TrialData[] responded = TrialsWithResponse(selectedTrials);
+        for (int i = 0; i < responded.Length; i++)
         {
-            if (selectedTrials[i].response == Globals.left) left++;
+            if (responded[i].response == Globals.left) left++;
         }
-        return ((float)left) / ((float)selectedTrials.Length);
+        return ((float)left) / ((float)responded.Length);
     }
     private class TrialData
     {
