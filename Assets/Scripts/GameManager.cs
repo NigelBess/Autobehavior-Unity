@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private IODevice keyboard;
     [SerializeField] private ArduinoIO arduinoIO;
     [SerializeField] private GameObject coverPanel;
+    [SerializeField] private GameObject failPanel;
     [SerializeField] private GameObject environment;
     private IODevice io;
     [SerializeField] private CanvasManager cm;
@@ -20,10 +21,12 @@ public class GameManager : MonoBehaviour
     private int currentTrialNumber;
     private const float controlPauseTime = 1f;
     private const float successPauseTime = 2f;
+    private const float failPauseTime = 4f;
     private bool waitingForIR;
 
     private void Awake()
     {
+        failPanel.SetActive(false);
         WelcomeError("");
         cm.Welcome();
         SetState(false);
@@ -80,10 +83,15 @@ public class GameManager : MonoBehaviour
         {
             Success();
         }
+        if (gratedCircle.OutOfBounds()!=0)
+        {
+            Hit(-1*gratedCircle.OutOfBounds());
+        }
     }
     private void WaitForIR()
     {
         waitingForIR = true;
+        failPanel.SetActive(false);
     }
     private void WelcomeError(System.Exception e)
     {
@@ -104,7 +112,6 @@ public class GameManager : MonoBehaviour
     private int ChooseSide()
     {
         float leftBias = Results.LeftProportionOnInterval(6);
-        Debug.Log(leftBias);
         float rand = Random.Range(0f,1f);
         if (rand > leftBias) return Globals.left;
         return Globals.right;
@@ -134,6 +141,17 @@ public class GameManager : MonoBehaviour
         StartCoroutine(WaitThenEndTrial(successPauseTime));
 
     }
+    private void Hit(int side)
+    {
+        StopAllCoroutines();
+        failPanel.SetActive(true);
+        io.CloseServos();
+        camControl.enabled = false;
+        Results.LogResponse(side,io.ReadIR());
+        DisableForSeconds(failPauseTime);
+        StartCoroutine(WaitThenEndTrial(failPauseTime));
+
+    }
     IEnumerator WaitThenEndTrial(float time)
     {
         yield return new WaitForSeconds(time);
@@ -143,6 +161,7 @@ public class GameManager : MonoBehaviour
     {
         StopAllCoroutines();
         SetState(false);
+        Results.Save();
         WaitForIR();
     }
     private void DisableForSeconds(MonoBehaviour obj, float time)

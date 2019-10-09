@@ -16,7 +16,7 @@ public class GratedCircle : MonoBehaviour
     }
     public void Reset(int side)
     {
-        transform.position = new Vector3(Screen.width / 4 * Mathf.Sign(side),Screen.height/2,0);
+        transform.position = new Vector3(Screen.width *(1 + Mathf.Sign(side)/2)/2,Screen.height/2,0);
         worldPoint = GetWorldPoint();
         originalHeight = GetWorldHeight();
     }
@@ -47,6 +47,12 @@ public class GratedCircle : MonoBehaviour
     public bool AtCenter()
     {
         return Mathf.Abs((transform.position.x - Screen.width / 2)) < pixelThresholdFromCenter;
+    }
+    public int OutOfBounds()
+    {
+        if ((transform.position.x + rt.rect.width) > Screen.width) return Globals.right;
+        if ((transform.position.x - rt.rect.width) < 0) return Globals.left;
+        return 0;
     }
     public Vector3 GetWorldPos()
     {

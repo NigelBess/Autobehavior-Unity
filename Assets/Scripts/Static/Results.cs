@@ -79,7 +79,7 @@ public static class Results
     }
     public static float TotalLeftBias()
     {
-        return LeftBias(CompletedTrials());
+        return LeftBias(TrialsWithResponse(CompletedTrials()));
     }
     public static float LeftBiasWithIR()
     {
@@ -87,8 +87,8 @@ public static class Results
     }
     public static float LeftProportionOnInterval(int numTrials)
     {
-        if (currentTrial <= 0) return Random.Range(0f,1f);
-        return LeftBias(LastNTrials(numTrials,CompletedTrials()));
+        if (currentTrial < 0) return Random.Range(0f, 1f);
+        return LeftBias(LastNTrials(numTrials,TrialsWithResponse(CompletedTrialsPlus1())));
     }
     private static TrialData[] LastNTrials(int n,TrialData[] selectedTrials)
     {
@@ -101,7 +101,19 @@ public static class Results
         }
         return outVar;
     }
-   
+    private static TrialData[] CompletedTrialsPlus1()
+    {
+        if (currentTrial < 0)
+        {
+            return new TrialData[0];
+        }
+        TrialData[] outVar = new TrialData[currentTrial+1];
+        for (int i = 0; i < currentTrial+1; i++)
+        {
+            outVar[i] = trials[i];
+        }
+        return outVar;
+    }
     private static TrialData[] CompletedTrials()
     {
         if (currentTrial <= 0)
@@ -184,12 +196,14 @@ public static class Results
     private static float LeftBias(TrialData[] selectedTrials)
     {
         int left = 0;
-        TrialData[] responded = TrialsWithResponse(selectedTrials);
-        for (int i = 0; i < responded.Length; i++)
+        for (int i = 0; i < selectedTrials.Length; i++)
         {
-            if (responded[i].response == Globals.left) left++;
+            Debug.Log(selectedTrials[i].response);
+            if (selectedTrials[i].response == Globals.left) left++;
         }
-        return ((float)left) / ((float)responded.Length);
+        float outVar = ((float)left) / ((float)selectedTrials.Length);
+        Debug.Log("left bias over " + selectedTrials.Length + " trials: " + outVar);
+        return outVar;
     }
     private class TrialData
     {
