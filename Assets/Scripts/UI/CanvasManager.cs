@@ -20,6 +20,10 @@ public class CanvasManager : MonoBehaviour
     {
         Open(2);
     }
+    public void Pause()
+    {
+        Open(3);
+    }
     private void Open(int next)
     {
         if (index < canvasSequence.Length - 1)

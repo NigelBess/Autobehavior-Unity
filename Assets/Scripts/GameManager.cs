@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -100,6 +101,36 @@ public class GameManager : MonoBehaviour
     private void WelcomeError(string msg)
     {
         welcomeErrorText.text = msg;
+    }
+    public void Pause()
+    {
+        SetState(false);
+        StopAllCoroutines();
+        Results.CancelTrial();
+        WaitForIR();
+        cm.Pause();
+        selfEnabled = false;
+    }
+    public void Resume()
+    {
+        StopAllCoroutines();
+        cm.HUD();
+        selfEnabled = true;
+    }
+    public void Quit()
+    {
+        if (Application.isEditor)
+        {
+            UnityEditor.EditorApplication.isPlaying = false;
+        }
+        else
+        {
+            Application.Quit();
+        }
+    }
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
     private void StartTrial()
     {

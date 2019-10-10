@@ -27,13 +27,11 @@ public static class Results
     public static void CreateSaveFile(string directory, string fileName)
     {
         path = new DataLogger.Path(directory, fileName, extension);
-        if(!path.Exists()) DataLogger.Save(path, "Response, Response Time, Correct?, IRSensorState",true);
+        if(!path.Exists()) DataLogger.Save(path, "Response, Stimulus Position, Trial Start Time, Response Time, Correct?, IRSensorState, Opacity",true);
     }
     public static void Save()
     {
-        TrialData t = ThisTrial();
-        string data = t.response + ", " + t.responseTime + ", " + GameFunctions.BoolToInt(t.correct) + ", " + GameFunctions.BoolToInt(t.irSensorState);
-        DataLogger.Save(path,data,true);
+        DataLogger.Save(path,ThisTrial().ToString(),true);
     }
     private static TrialData ThisTrial()
     {
@@ -42,10 +40,21 @@ public static class Results
     public static void StartTrial(int stimPosition, float opacity)
     {
         currentTrial++;
+        if (currentTrial < 0) currentTrial = 0;
         TrialData t = ThisTrial();
         t.startTime = Time.time;
         t.stimPosition = stimPosition;
         t.opacity = opacity;
+    }
+    public static void CancelTrial()
+    {
+        //should only be called if the game is paused mid trial
+
+        //do nothing if we havent started any trials
+        if (currentTrial < 0) return;
+
+        trials[currentTrial] = new TrialData();//reset info about current trial
+        currentTrial--;
     }
     public static void LogSuccess(bool irSensorState)
     {
@@ -214,6 +223,16 @@ public static class Results
         public bool correct = false;
         public bool irSensorState = false;
         public float opacity = -1f;
+        public override string ToString()
+        {
+            return response + ", " +
+                stimPosition + ", " +
+                startTime + ", " +
+                responseTime + ", " +
+                GameFunctions.BoolToInt(correct) + ", " +
+                GameFunctions.BoolToInt(irSensorState) + ", " +
+                opacity;
+        }
     }
 }
 
