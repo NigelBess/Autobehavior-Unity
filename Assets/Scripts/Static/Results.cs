@@ -15,7 +15,11 @@ public static class Results
         {
             trials[i] = new TrialData();
         }
-        currentTrial = -1;
+        currentTrial = 0;
+    }
+    public static bool isNull()
+    {
+        return trials == null;
     }
     public static void CreateSaveFile(string directory, string mouseID, int sessionNum)
     {
@@ -39,12 +43,15 @@ public static class Results
     }
     public static void StartTrial(int stimPosition, float opacity)
     {
-        currentTrial++;
         if (currentTrial < 0) currentTrial = 0;
         TrialData t = ThisTrial();
         t.startTime = Time.time;
         t.stimPosition = stimPosition;
         t.opacity = opacity;
+    }
+    public static void EndTrial()
+    {
+        currentTrial++;
     }
     public static void CancelTrial()
     {
@@ -54,7 +61,6 @@ public static class Results
         if (currentTrial < 0) return;
 
         trials[currentTrial] = new TrialData();//reset info about current trial
-        currentTrial--;
     }
     public static void LogSuccess(bool irSensorState)
     {
@@ -62,7 +68,7 @@ public static class Results
     }
     public static void LogFail(bool irSensorState)
     {
-        LogResponse(ThisTrial().stimPosition * -1, irSensorState);
+        LogResponse(-ThisTrial().stimPosition, irSensorState);
     }
     public static void LogResponse(int side,bool irSensorState)
     {
@@ -73,10 +79,21 @@ public static class Results
         t.correct = t.response == t.stimPosition;
         t.irSensorState = irSensorState;
     }
-    
+    public static int CurrentTrialNumber()
+    {
+        return currentTrial;
+    }
     public static float TotalCorrectRate()
     {
         return CorrectRate(CompletedTrials());
+    }
+    public static float TotalResponseRate()
+    {
+        return ResponseRate(CompletedTrials());
+    }
+    public static float ActiveResponseRate()
+    {
+        return ResponseRate(TrialsWithIR(CompletedTrials()));
     }
     public static float RespondedCorrectRate()
     {
@@ -88,16 +105,16 @@ public static class Results
     }
     public static float TotalLeftBias()
     {
-        return LeftBias(TrialsWithResponse(CompletedTrials()));
+        return LeftBias(TrialsWithResponse(AllTrials()));
     }
     public static float LeftBiasWithIR()
     {
-        return LeftBias(TrialsWithIR(CompletedTrials()));
+        return LeftBias(TrialsWithIR(AllTrials()));
     }
     public static float LeftProportionOnInterval(int numTrials)
     {
         if (currentTrial < 0) return Random.Range(0f, 1f);
-        return LeftBias(LastNTrials(numTrials,TrialsWithResponse(CompletedTrialsPlus1())));
+        return LeftBias(LastNTrials(numTrials,TrialsWithResponse(AllTrials())));
     }
     private static TrialData[] LastNTrials(int n,TrialData[] selectedTrials)
     {
@@ -110,14 +127,14 @@ public static class Results
         }
         return outVar;
     }
-    private static TrialData[] CompletedTrialsPlus1()
+    private static TrialData[] AllTrials()
     {
         if (currentTrial < 0)
         {
             return new TrialData[0];
         }
-        TrialData[] outVar = new TrialData[currentTrial+1];
-        for (int i = 0; i < currentTrial+1; i++)
+        TrialData[] outVar = new TrialData[currentTrial];
+        for (int i = 0; i < currentTrial; i++)
         {
             outVar[i] = trials[i];
         }
@@ -147,7 +164,7 @@ public static class Results
         int j = 0;
         for (int i = 0; i < selectedTrials.Length; i++)
         {
-            if (selectedTrials[i].response != 0)
+            if (selectedTrials[i].correct)
             {
                 outVar[j] = selectedTrials[i];
                 j++;
@@ -168,7 +185,7 @@ public static class Results
         {
             if (selectedTrials[i].response!=0)
             {
-                outVar[j] = trials[i];
+                outVar[j] = selectedTrials[i];
                 j++;
             }
         }
@@ -187,7 +204,7 @@ public static class Results
         {
             if (selectedTrials[i].irSensorState)
             {
-                outVar[j] = trials[i];
+                outVar[j] = selectedTrials[i];
                 j++;
             }
         }
@@ -200,19 +217,27 @@ public static class Results
         {
             if (selectedTrials[i].correct) correct++;
         }
-        return (float)correct / (float)(currentTrial + 1);
+        return (float)correct / (float)(selectedTrials.Length);
     }
     private static float LeftBias(TrialData[] selectedTrials)
     {
         int left = 0;
         for (int i = 0; i < selectedTrials.Length; i++)
         {
-            Debug.Log(selectedTrials[i].response);
             if (selectedTrials[i].response == Globals.left) left++;
         }
         float outVar = ((float)left) / ((float)selectedTrials.Length);
-        Debug.Log("left bias over " + selectedTrials.Length + " trials: " + outVar);
+        Debug.Log("left bias over " + selectedTrials.Length + " trialss: " + outVar);
         return outVar;
+    }
+    private static float ResponseRate(TrialData[] selectedTrials)
+    {
+        int responded = 0;
+        for (int i = 0; i < selectedTrials.Length; i++)
+        {
+            if (selectedTrials[i].response!=0) responded++;
+        }
+        return (float)responded / (float)(selectedTrials.Length);
     }
     private class TrialData
     {

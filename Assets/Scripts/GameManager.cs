@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
         failPanel.SetActive(true);
         io.CloseServos();
         camControl.enabled = false;
-        Results.LogResponse(side,io.ReadIR());
+        Results.LogFail(io.ReadIR());
         DisableForSeconds(failPauseTime);
         StartCoroutine(WaitThenEndTrial(failPauseTime));
 
@@ -193,6 +193,7 @@ public class GameManager : MonoBehaviour
         StopAllCoroutines();
         SetState(false);
         Results.Save();
+        Results.EndTrial();
         WaitForIR();
     }
     private void DisableForSeconds(MonoBehaviour obj, float time)
