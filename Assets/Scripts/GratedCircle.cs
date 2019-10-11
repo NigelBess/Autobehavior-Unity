@@ -48,11 +48,11 @@ public class GratedCircle : MonoBehaviour
     {
         return Mathf.Abs((transform.position.x - Screen.width / 2)) < pixelThresholdFromCenter;
     }
-    public int OutOfBounds()
+    public bool OutOfBounds()
     {
-        if ((transform.position.x + rt.rect.width) > Screen.width) return Globals.right;
-        if ((transform.position.x - rt.rect.width) < 0) return Globals.left;
-        return 0;
+        if ((transform.position.x + rt.rect.width) > Screen.width) return true;
+        if ((transform.position.x - rt.rect.width) < 0) return true;
+        return false;
     }
     public Vector3 GetWorldPos()
     {

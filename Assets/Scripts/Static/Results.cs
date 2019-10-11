@@ -66,16 +66,23 @@ public static class Results
     {
         LogResponse(ThisTrial().stimPosition, irSensorState);
     }
-    public static void LogFail(bool irSensorState)
+    public static void LogHit(bool irSensorState)
     {
         LogResponse(-ThisTrial().stimPosition, irSensorState);
     }
-    public static void LogResponse(int side,bool irSensorState)
+    public static void LogTimeOut(bool irSensorState)
+    {
+        LogResponse(0, irSensorState);
+    }
+    private static void LogResponse(int side,bool irSensorState)
     {
         TrialData t = ThisTrial();
         if (t.response != 0) return;
         t.response = side;
-        t.responseTime = Time.time;
+        if (side != 0)
+        {
+            t.responseTime = Time.time;
+        }
         t.correct = t.response == t.stimPosition;
         t.irSensorState = irSensorState;
     }

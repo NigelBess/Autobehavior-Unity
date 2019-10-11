@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private const float controlPauseTime = 1f;
     private const float successPauseTime = 2f;
     private const float failPauseTime = 4f;
+    private const float timeOutTime = 10f;
     private bool waitingForIR;
 
     private void Awake()
@@ -84,9 +85,9 @@ public class GameManager : MonoBehaviour
         {
             Success();
         }
-        if (gratedCircle.OutOfBounds()!=0)
+        if (gratedCircle.OutOfBounds())
         {
-            Hit(-1*gratedCircle.OutOfBounds());
+            Hit();
         }
     }
     private void WaitForIR()
@@ -139,6 +140,7 @@ public class GameManager : MonoBehaviour
         int side = ChooseSide();
         gratedCircle.Reset(side);
         Results.StartTrial(side,1);
+        StartCoroutine(WaitForTimeOut());
     }
     private int ChooseSide()
     {
@@ -172,16 +174,24 @@ public class GameManager : MonoBehaviour
         StartCoroutine(WaitThenEndTrial(successPauseTime));
 
     }
-    private void Hit(int side)
+    private void Hit()
+    {
+        Results.LogHit(io.ReadIR());
+        Fail();
+    }
+    private void TimeOut()
+    {
+        Results.LogTimeOut(io.ReadIR());
+        Fail();
+    }
+    private void Fail()
     {
         StopAllCoroutines();
         failPanel.SetActive(true);
         io.CloseServos();
         camControl.enabled = false;
-        Results.LogFail(io.ReadIR());
         DisableForSeconds(failPauseTime);
         StartCoroutine(WaitThenEndTrial(failPauseTime));
-
     }
     IEnumerator WaitThenEndTrial(float time)
     {
@@ -195,6 +205,11 @@ public class GameManager : MonoBehaviour
         Results.Save();
         Results.EndTrial();
         WaitForIR();
+    }
+    IEnumerator WaitForTimeOut()
+    {
+        yield return new WaitForSeconds(timeOutTime);
+        TimeOut();
     }
     private void DisableForSeconds(MonoBehaviour obj, float time)
     {
