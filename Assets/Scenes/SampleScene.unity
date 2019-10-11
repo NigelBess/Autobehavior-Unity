@@ -732,6 +732,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: rewardField
       objectReference: {fileID: 0}
+    - target: {fileID: 8520460376158506396, guid: 3ac6e3ab1c9150643a9bd2ebc4b07f27,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7591649944680109738, guid: 3ac6e3ab1c9150643a9bd2ebc4b07f27,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3872,6 +3877,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51c44708956a97243b06a2f493c31db3, type: 3}
+--- !u!114 &1074790211 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2096457581533296796, guid: 3c1872163423e4542817ba5d47b231de,
+    type: 3}
+  m_PrefabInstance: {fileID: 1450713495}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1079243206
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7104,14 +7121,26 @@ MonoBehaviour:
   activeCorrectRateText: {fileID: 496729708}
   totalResponseRateText: {fileID: 766156283}
   activeResponseRateText: {fileID: 2133233539}
-  totalLeftBiasText: {fileID: 0}
-  activeLeftBiasText: {fileID: 0}
+  totalLeftBiasText: {fileID: 1886549672}
+  activeLeftBiasText: {fileID: 1074790211}
 --- !u!4 &1877304061 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5473732506458559085, guid: 80d2c4f882f2de44787d4810920eb7e4,
     type: 3}
   m_PrefabInstance: {fileID: 1268964742}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1886549672 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2096457581533296796, guid: 3c1872163423e4542817ba5d47b231de,
+    type: 3}
+  m_PrefabInstance: {fileID: 1518691390}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1912636350 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 718294363520903568, guid: 7b054d04381476749bb40b4b6f16dbb1,
