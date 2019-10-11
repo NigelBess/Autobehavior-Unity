@@ -10,7 +10,8 @@ public class ResultsUI : MonoBehaviour
     [SerializeField] private Text activeCorrectRateText;
     [SerializeField] private Text totalResponseRateText;
     [SerializeField] private Text activeResponseRateText;
-    [SerializeField] private Text leftBiasText;
+    [SerializeField] private Text totalLeftBiasText;
+    [SerializeField] private Text activeLeftBiasText;
 
     private void OnEnable()
     {
@@ -24,7 +25,8 @@ public class ResultsUI : MonoBehaviour
         activeCorrectRateText.text = MakeString("Active correct rate", Results.RespondedWithIRCorrectRate());
         totalResponseRateText.text = MakeString("Total response rate",Results.TotalResponseRate());
         activeResponseRateText.text = MakeString("Active response rate", Results.ActiveResponseRate());
-        leftBiasText.text = MakeString("Left bias", Results.TotalLeftBias());
+        totalLeftBiasText.text = MakeString("Total left bias", Results.TotalLeftBias());
+        activeLeftBiasText.text = MakeString("Active left bias", Results.LeftBiasWithIR());
     }
     private string MakeString(string name,float value)
     {

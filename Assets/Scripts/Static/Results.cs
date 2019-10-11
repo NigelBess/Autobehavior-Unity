@@ -85,6 +85,8 @@ public static class Results
         }
         t.correct = t.response == t.stimPosition;
         t.irSensorState = irSensorState;
+        Save();
+        EndTrial();
     }
     public static int CurrentTrialNumber()
     {

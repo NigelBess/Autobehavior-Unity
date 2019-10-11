@@ -248,6 +248,19 @@ PrefabInstance:
       propertyPath: m_Text
       value: 'Active response rate: [placeholder text]'
       objectReference: {fileID: 0}
+    - target: {fileID: 1793295347, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793295348, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 1411438115, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_Text
+      value: "(Trials that did not time out) / (trials that timed out) \n\nThis only
+        includes trials where the mouse was in the viewport at the time of completion."
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
 --- !u!224 &2366116 stripped
@@ -403,6 +416,7 @@ GameObject:
   - component: {fileID: 54593453}
   - component: {fileID: 54593455}
   - component: {fileID: 54593454}
+  - component: {fileID: 54593452}
   m_Layer: 0
   m_Name: ScriptHolder
   m_TagString: Untagged
@@ -475,6 +489,18 @@ MonoBehaviour:
   cm: {fileID: 54593450}
   welcomeFields: {fileID: 1420861715}
   welcomeErrorText: {fileID: 860562113}
+--- !u!114 &54593452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54593447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad523ce74490c74ba0fc27baff85eaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &54593453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1928,6 +1954,15 @@ PrefabInstance:
       propertyPath: m_Text
       value: 'Total response rate: [placeholder text]'
       objectReference: {fileID: 0}
+    - target: {fileID: 1793295347, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1411438115, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_Text
+      value: "(Trials that did not time out) / (trials that timed out) \n\nThis includes
+        trials where the mouse was not in the viewport at the time of completion."
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
 --- !u!1001 &471470809
@@ -3142,7 +3177,20 @@ PrefabInstance:
     - target: {fileID: 2096457581533296796, guid: 3c1872163423e4542817ba5d47b231de,
         type: 3}
       propertyPath: m_Text
-      value: 'Correct rate with active response: [placeholder text]'
+      value: 'Active correct rate: [placeholder text]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793295347, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793295348, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1411438115, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_Text
+      value: Correct rate only counting trials where the mouse was in the viewport
+        at the time of completion. Trials that timed out are not counted.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
@@ -5089,6 +5137,149 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2121068487}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1450713495
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1861128915}
+    m_Modifications:
+    - target: {fileID: 2096457581533296798, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_Name
+      value: alb text
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096457581533296796, guid: 3c1872163423e4542817ba5d47b231de,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Active left bias: [placeholder text]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793295347, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793295348, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 1411438115, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_Text
+      value: Left bias only counting trials that completed while the mouse was in
+        the viewport. Trials that timed out are not counted.
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+--- !u!224 &1450713496 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
+    type: 3}
+  m_PrefabInstance: {fileID: 1450713495}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1470154810
 GameObject:
   m_ObjectHideFlags: 0
@@ -5648,7 +5839,7 @@ PrefabInstance:
     - target: {fileID: 2096457581533296798, guid: 3c1872163423e4542817ba5d47b231de,
         type: 3}
       propertyPath: m_Name
-      value: lb text
+      value: tlb text
       objectReference: {fileID: 0}
     - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
         type: 3}
@@ -5758,7 +5949,19 @@ PrefabInstance:
     - target: {fileID: 2096457581533296796, guid: 3c1872163423e4542817ba5d47b231de,
         type: 3}
       propertyPath: m_Text
-      value: 'Left bias: [placeholder text]'
+      value: 'Total left bias: [placeholder text]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793295347, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793295348, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1411438115, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_Text
+      value: Total left bias over all trials. Trials that timed out are not counted.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
@@ -6850,13 +7053,14 @@ RectTransform:
   - {fileID: 766156282}
   - {fileID: 2366116}
   - {fileID: 1518691391}
+  - {fileID: 1450713496}
   m_Father: {fileID: 1533877033128968706}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: -40, y: -300}
+  m_AnchoredPosition: {x: 20, y: 50}
+  m_SizeDelta: {x: -80, y: -300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1861128916
 MonoBehaviour:
@@ -6900,25 +7104,14 @@ MonoBehaviour:
   activeCorrectRateText: {fileID: 496729708}
   totalResponseRateText: {fileID: 766156283}
   activeResponseRateText: {fileID: 2133233539}
-  leftBiasText: {fileID: 1886549672}
+  totalLeftBiasText: {fileID: 0}
+  activeLeftBiasText: {fileID: 0}
 --- !u!4 &1877304061 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5473732506458559085, guid: 80d2c4f882f2de44787d4810920eb7e4,
     type: 3}
   m_PrefabInstance: {fileID: 1268964742}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1886549672 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2096457581533296796, guid: 3c1872163423e4542817ba5d47b231de,
-    type: 3}
-  m_PrefabInstance: {fileID: 1518691390}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1912636350 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 718294363520903568, guid: 7b054d04381476749bb40b4b6f16dbb1,
@@ -7507,11 +7700,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096457581533296796, guid: 3c1872163423e4542817ba5d47b231de,
-        type: 3}
-      propertyPath: m_Text
-      value: 'Active response rate: [placeholder text]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
@@ -9126,6 +9314,18 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: 'Total correct rate: [placeholder text]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793295347, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793295348, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1411438115, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_Text
+      value: Total correct rate over all trials. Trials that timed out count as failure.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c1872163423e4542817ba5d47b231de, type: 3}

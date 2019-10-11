@@ -181,8 +181,17 @@ public class GameManager : MonoBehaviour
     }
     private void TimeOut()
     {
-        Results.LogTimeOut(io.ReadIR());
-        Fail();
+        bool irState = io.ReadIR();
+        Results.LogTimeOut(irState);
+        if (irState)
+        {
+            Fail();
+        }
+        else
+        {
+            io.CloseServos();
+            EndTrial();
+        }
     }
     private void Fail()
     {
@@ -202,8 +211,7 @@ public class GameManager : MonoBehaviour
     {
         StopAllCoroutines();
         SetState(false);
-        Results.Save();
-        Results.EndTrial();
+        
         WaitForIR();
     }
     IEnumerator WaitForTimeOut()
