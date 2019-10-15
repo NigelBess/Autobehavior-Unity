@@ -45,7 +45,7 @@ public static class Results
     {
         if (currentTrial < 0) currentTrial = 0;
         TrialData t = ThisTrial();
-        t.startTime = Time.time;
+        t.startTime = TimeScaler.time;
         t.stimPosition = stimPosition;
         t.opacity = opacity;
     }
@@ -81,7 +81,7 @@ public static class Results
         t.response = side;
         if (side != 0)
         {
-            t.responseTime = Time.time;
+            t.responseTime = TimeScaler.time;
         }
         t.correct = t.response == t.stimPosition;
         t.irSensorState = irSensorState;

@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CanvasManager cm;
     [SerializeField] private InputFields welcomeFields;
     [SerializeField] private Text welcomeErrorText;
+    [SerializeField] private SoundMaker sound;
     private bool selfEnabled = true;
     private int numTrials;
     private int currentTrialNumber;
@@ -120,14 +121,7 @@ public class GameManager : MonoBehaviour
     }
     public void Quit()
     {
-        if (Application.isEditor)
-        {
-            UnityEditor.EditorApplication.isPlaying = false;
-        }
-        else
-        {
-            Application.Quit();
-        }
+        Application.Quit();
     }
     public void MainMenu()
     {
