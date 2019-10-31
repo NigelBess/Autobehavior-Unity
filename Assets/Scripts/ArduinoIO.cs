@@ -1,21 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ArduinoVars;
 
 public class ArduinoIO : IODevice
 {
     [SerializeField] private ArduinoInterface arduino;
-    private const int irPin = 7;
+    private const int irPin = (int)Pin.D7;
+    private const int lickPin = (int)Pin.A2;
+    private const float lickMeterVoltageDelta = 1f;
+    private float lickMeterExpectedVoltage;
+
+    private const int servoTransistorPin = (int)Pin.D6;
+    private const int solenoidTransistorPin = (int)Pin.D8;
     
     private const int leftServoPin = 10;
     private const int rightServoPin = 9;
 
-    private const int leftServoOpenPos = 180;
-    private const int rightServoOpenPos = 90;
-    private const int leftServoClosedPos = 90;
-    private const int rightServoClosedPos = 180;
+    private const int leftServoOpenPos = 90;
+    private const int rightServoOpenPos = 180;
+    private const int leftServoClosedPos = 180;
+    private const int rightServoClosedPos = 90;
 
     private const float servoCloseTime = 0.3f;
+
+    private const int encoderInterruptPin = 2;
+    private const int encoderSecondaryPin = 3;
 
     public void Connect(string port)
     {
@@ -23,20 +33,43 @@ public class ArduinoIO : IODevice
         arduino.Connect();
         arduino.AttachServo(leftServoPin);
         arduino.AttachServo(rightServoPin);
+        arduino.PinMode(irPin, (int)Mode.Input);
+        arduino.PinMode(lickPin, (int)Mode.Input);
+        arduino.PinMode(servoTransistorPin, (int)Mode.Output);
+        arduino.PinMode(solenoidTransistorPin, (int)Mode.Output);
+        CalibrateLickMeter();
+    }
+    public void Disconnect()
+    {
+        arduino.Disconnect();
+    }
+    private void CalibrateLickMeter()
+    {
+        lickMeterExpectedVoltage = arduino.AnalogRead(lickPin);
     }
     public override int ReadJoystick()
     {
         throw new System.NotImplementedException();
     }
+    private void PositionServos(int leftPos, int rightPos)
+    {
+        arduino.DigitalWrite(servoTransistorPin,1);
+        arduino.WriteServo(leftServoPin, leftPos);
+        arduino.WriteServo(rightServoPin, rightPos);
+        StartCoroutine(WaitToPowerOffServos());
+    }
+    IEnumerator WaitToPowerOffServos()
+    {
+        yield return new WaitForSeconds(servoCloseTime);
+        arduino.DigitalWrite(servoTransistorPin, 0);
+    }
     public override void CloseServos()
     {
-        arduino.WriteServo(leftServoPin,leftServoClosedPos);
-        arduino.WriteServo(rightServoPin, rightServoClosedPos);
+        PositionServos(leftServoClosedPos, rightServoClosedPos);
     }
     public override void OpenServos()
     {
-        arduino.WriteServo(leftServoPin, leftServoOpenPos);
-        arduino.WriteServo(rightServoPin, rightServoOpenPos);
+        PositionServos(leftServoOpenPos,rightServoOpenPos);
     }
     public override float EstimatedServoCloseTime()
     {
@@ -45,5 +78,13 @@ public class ArduinoIO : IODevice
     public override bool ReadIR()
     {
         return arduino.DigitalRead(irPin);
+    }
+    public bool IsLicking()
+    {
+        return (lickMeterExpectedVoltage - LickMeterVoltage()) > lickMeterVoltageDelta;
+    }
+    public float LickMeterVoltage()
+    {
+        return arduino.AnalogRead(lickPin);
     }
 }

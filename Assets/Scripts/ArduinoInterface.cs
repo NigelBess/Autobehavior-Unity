@@ -25,7 +25,7 @@ public class ArduinoInterface : MonoBehaviour
     }
     private void OnApplicationQuit()
     {
-        if (port!=null)  port.DtrEnable = true;
+        Disconnect();
     }
     public void Connect()
     {
@@ -55,13 +55,17 @@ public class ArduinoInterface : MonoBehaviour
     }
     public void Disconnect()
     {
-        port.Close();
+        if (port != null)
+        {
+            port.DtrEnable = true;
+            port.Close();
+        }
     }
     public byte[] SendMessageReliable(byte[] message)
     {
         SendMessage(message);
         
-        byte[] returnMsg =  GetMessage();
+        byte[] returnMsg =  GetMessage(true);
         return returnMsg;
         
     }
@@ -149,6 +153,18 @@ public class ArduinoInterface : MonoBehaviour
     {
         SendMessageReliable(new byte[3] { 6, (byte)pin, (byte)angle });
     }
+    public void DetachServo(int pin)
+    {
+        SendMessageReliable(new byte[2] { 7, (byte)pin});
+    }
+    public void AttachEncoder(int interruptPin, int secondaryPin)
+    {
+        SendMessageReliable(new byte[3] {8, (byte)interruptPin, (byte)secondaryPin});
+    }
+    public int ReadEncoder(int interruptPin)
+    {
+        return ParseInt(SendMessageReliable(new byte[2] {9, (byte)interruptPin}));
+    }
     private int ParseInt(byte[] response)
     {
         int outVar = 0;
@@ -159,5 +175,12 @@ public class ArduinoInterface : MonoBehaviour
         if (response[0] > 0) outVar *= -1;
         return outVar;
     }
-
+    private void DebugBytes(byte[] bytes)
+    {
+        string msg = "";
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            msg += bytes[i].ToString() + " ";
+        }
+    }
 }

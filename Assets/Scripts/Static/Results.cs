@@ -236,7 +236,6 @@ public static class Results
             if (selectedTrials[i].response == Globals.left) left++;
         }
         float outVar = ((float)left) / ((float)selectedTrials.Length);
-        Debug.Log("left bias over " + selectedTrials.Length + " trialss: " + outVar);
         return outVar;
     }
     private static float ResponseRate(TrialData[] selectedTrials)

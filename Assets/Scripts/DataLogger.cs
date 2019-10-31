@@ -11,7 +11,8 @@ public static class DataLogger
         path.Create();
         using (TextWriter writer = new StreamWriter(path.ToString(), append: append))
         {
-            writer.WriteLine(data+",");
+            if (append) data += ",";
+            writer.Write(data);
         }
     }
 

@@ -166,6 +166,7 @@ public class GameManager : MonoBehaviour
         Results.LogSuccess(io.ReadIR());
         DisableForSeconds(successPauseTime);
         StartCoroutine(WaitThenEndTrial(successPauseTime));
+        sound.Success();
 
     }
     private void Hit()
@@ -190,6 +191,7 @@ public class GameManager : MonoBehaviour
     private void Fail()
     {
         StopAllCoroutines();
+        sound.Fail();
         failPanel.SetActive(true);
         io.CloseServos();
         camControl.enabled = false;
