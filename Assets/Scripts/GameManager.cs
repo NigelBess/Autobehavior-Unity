@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
 
             welcomeFields.Save();
             numTrials = int.Parse(SessionData.numTrials);
+            if (numTrials < 1) numTrials = 1;
             Results.Malloc(numTrials);
             Results.CreateSaveFile(SessionData.saveDirectory,SessionData.mouseID,int.Parse(SessionData.sessionNumber));
             bool natBackground = int.Parse(SessionData.naturalisticBackground) > 0;
@@ -125,6 +126,7 @@ public class GameManager : MonoBehaviour
     }
     public void MainMenu()
     {
+        io.Disconnect();
         SceneManager.LoadScene(0);
     }
     private void StartTrial()
@@ -187,6 +189,12 @@ public class GameManager : MonoBehaviour
             io.CloseServos();
             EndTrial();
         }
+    }
+    public void TroubleshootHardware()
+    {
+        if(io!=null)   io.Disconnect();
+        welcomeFields.Save();
+        SceneManager.LoadScene(1,0);
     }
     private void Fail()
     {

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TestSceneManager : MonoBehaviour
 {
-    [SerializeField] private float updateTime = 0.5f;
+    [SerializeField] private float updateTime = 0.25f;
     private float nextUpdateTime = 0f;
     [SerializeField] private ResponseText responseText;
     [SerializeField] private InputField comField;
@@ -13,6 +14,7 @@ public class TestSceneManager : MonoBehaviour
     [SerializeField] private GameObject disconnectButton;
     [SerializeField] private ArduinoIO io;
     [SerializeField] private ComSpeedTracker tracker;
+    [SerializeField] private Text miscInText;
     [SerializeField] private Text lickMeterStateText;
     [SerializeField] private Text lickMeterVoltageText;
     [SerializeField] private Text irStateText;
@@ -20,18 +22,21 @@ public class TestSceneManager : MonoBehaviour
     [SerializeField] private Text servoButtonText;
     [SerializeField] private Text encoderCountText;
     [SerializeField] private GameObject interactables;
+    private const float pauseForMessageSendTime = 0.1f;
+    const int comFieldIndex = 4;
 
-    private DataLogger.Path comFieldPath;
+    private DataLogger.Path fieldValuesPath;
     private bool connected = false;
     private void Awake()
     {
         io.Disconnect();
         ResetServoButton(false);
         Connected(false);
-        comFieldPath = new DataLogger.Path("testSceneComField");
+        fieldValuesPath = new DataLogger.Path(Globals.mainMenuFieldsFileName);
         try
         {
-            comField.text = DataLogger.ReadArray(comFieldPath)[0];
+            string[] values = DataLogger.ReadArray(fieldValuesPath);
+            comField.text = values[comFieldIndex];
         }
         catch { }
     }
@@ -49,16 +54,24 @@ public class TestSceneManager : MonoBehaviour
         {
             io.Connect(comField.text);
             tracker.AddCom();
-            DataLogger.Save(comFieldPath, comField.text, false);
+            try
+            {
+                string[] values = DataLogger.ReadArray(fieldValuesPath);
+                values[comFieldIndex] = comField.text;
+                DataLogger.Save(fieldValuesPath, values, false);
+            }
+            catch { }
+                  
         }
         catch (System.Exception e)
         {
             responseText.SetText(e.Message, Color.red);
             return;
         }
-        responseText.SetText("Connected successfully.");
+ 
         Connected(true);
         OpenServos();
+        responseText.SetText("Connected successfully.",Color.green);
     }
     public void Disconnect()
     {
@@ -81,13 +94,19 @@ public class TestSceneManager : MonoBehaviour
             lickMeterStateText.color = Color.white;
         }
         tracker.AddCom();
+
+
         if (Time.time > nextUpdateTime)
         {
             lickMeterVoltageText.text = io.LickMeterVoltage().ToString("F2");
+            tracker.AddCom();
+
+            miscInText.text = io.ReadMiscIn().ToString("F2");
+            tracker.AddCom();
+
             nextUpdateTime = Time.time + updateTime;
         }
         
-        tracker.AddCom();
 
         if (io.ReadIR())
         {
@@ -100,6 +119,32 @@ public class TestSceneManager : MonoBehaviour
             irStateText.color = Color.white;
         }
         tracker.AddCom();
+
+        encoderCountText.text = io.ReadEncoder().ToString();
+        tracker.AddCom();
+
+        //stress test
+        int stressTestsPerFrame = 5;
+        for (int i = 0; i < stressTestsPerFrame; i++)
+        {
+            io.CheckConnection();
+        }
+        tracker.AddCom(stressTestsPerFrame);
+    }
+    public void ResetEncoder()
+    {
+        try
+        {
+            io.ResetEncoder();
+        }
+        catch (System.Exception e)
+        {
+            responseText.SetText(e.Message);
+            return;
+        }
+        
+        responseText.SetText("Encoder reset to zero.");
+
     }
     public void OpenServos()
     {
@@ -121,7 +166,7 @@ public class TestSceneManager : MonoBehaviour
             }
             else
             {
-                io.CloseServos();
+                io.CloseServosNoReset();
                 responseText.SetText("Servos closed.");
             }
 
@@ -145,5 +190,17 @@ public class TestSceneManager : MonoBehaviour
             servoButtonText.text = "Open Servos";
             servoButton.onClick.AddListener(delegate { OpenServos(); });
         }
+    }
+    public void MainMenu()
+    {
+        enabled = false;
+        StartCoroutine(WaitThenGoToMainMenu());
+        
+    }
+    IEnumerator WaitThenGoToMainMenu()
+    {
+        yield return new WaitForSeconds(pauseForMessageSendTime);
+        io.Disconnect();
+        SceneManager.LoadScene("Main", 0);
     }
 }

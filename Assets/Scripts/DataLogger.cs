@@ -11,11 +11,28 @@ public static class DataLogger
         path.Create();
         using (TextWriter writer = new StreamWriter(path.ToString(), append: append))
         {
-            if (append) data += ",";
-            writer.Write(data);
+            writer.WriteLine(data);
         }
     }
-
+    public static void Save(Path path, string[] data, bool append)
+    {
+        path.Create();
+        if (!append)
+        {
+            using (TextWriter writer = new StreamWriter(path.ToString(), append: false))
+            {
+                writer.Write(string.Empty);
+            }
+        }
+        using (TextWriter writer = new StreamWriter(path.ToString(), append: true))
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                writer.WriteLine(data[i]+",");
+            }
+            
+        }
+    }
     public static string Read(Path path)
     {
         if (!path.Exists())

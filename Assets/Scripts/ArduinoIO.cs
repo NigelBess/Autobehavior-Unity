@@ -6,6 +6,7 @@ using ArduinoVars;
 public class ArduinoIO : IODevice
 {
     [SerializeField] private ArduinoInterface arduino;
+    private const int miscInPin = (int)Pin.A3;
     private const int irPin = (int)Pin.D7;
     private const int lickPin = (int)Pin.A2;
     private const float lickMeterVoltageDelta = 1f;
@@ -26,22 +27,35 @@ public class ArduinoIO : IODevice
 
     private const int encoderInterruptPin = 2;
     private const int encoderSecondaryPin = 3;
-
+    private bool connected = false;
+    private void Awake()
+    {
+        connected = false;
+    }
     public void Connect(string port)
     {
+        if (connected)
+        {
+            throw new System.Exception("Arduino is already connected");
+        }
         arduino.SetPort(port);
         arduino.Connect();
+        connected = true;
         arduino.AttachServo(leftServoPin);
         arduino.AttachServo(rightServoPin);
-        arduino.PinMode(irPin, (int)Mode.Input);
+        arduino.PinMode(miscInPin, (int)Mode.Input);
+        arduino.PinMode(irPin, (int)Mode.Input_Pullup);
         arduino.PinMode(lickPin, (int)Mode.Input);
         arduino.PinMode(servoTransistorPin, (int)Mode.Output);
         arduino.PinMode(solenoidTransistorPin, (int)Mode.Output);
+        arduino.AttachEncoder(encoderInterruptPin, encoderSecondaryPin);
         CalibrateLickMeter();
     }
-    public void Disconnect()
+    public override void Disconnect()
     {
+        if (!connected) return;
         arduino.Disconnect();
+        connected = false;
     }
     private void CalibrateLickMeter()
     {
@@ -50,6 +64,10 @@ public class ArduinoIO : IODevice
     public override int ReadJoystick()
     {
         throw new System.NotImplementedException();
+    }
+    public int ReadEncoder()
+    {
+        return arduino.ReadEncoder(encoderInterruptPin);
     }
     private void PositionServos(int leftPos, int rightPos)
     {
@@ -63,7 +81,17 @@ public class ArduinoIO : IODevice
         yield return new WaitForSeconds(servoCloseTime);
         arduino.DigitalWrite(servoTransistorPin, 0);
     }
+    IEnumerator WaitToResetEncoder()
+    {
+        yield return new WaitForSeconds(servoCloseTime);
+        ResetEncoder();
+    }
     public override void CloseServos()
+    {
+        CloseServosNoReset();
+        StartCoroutine(WaitToResetEncoder());
+    }
+    public void CloseServosNoReset()
     {
         PositionServos(leftServoClosedPos, rightServoClosedPos);
     }
@@ -77,7 +105,7 @@ public class ArduinoIO : IODevice
     }
     public override bool ReadIR()
     {
-        return arduino.DigitalRead(irPin);
+        return !arduino.DigitalRead(irPin);
     }
     public bool IsLicking()
     {
@@ -86,5 +114,17 @@ public class ArduinoIO : IODevice
     public float LickMeterVoltage()
     {
         return arduino.AnalogRead(lickPin);
+    }
+    public void CheckConnection()
+    {
+        arduino.CheckConnection();
+    }
+    public void ResetEncoder()
+    {
+        arduino.ResetEncoder(encoderInterruptPin);
+    }
+    public float ReadMiscIn()
+    {
+        return arduino.AnalogRead(miscInPin);
     }
 }

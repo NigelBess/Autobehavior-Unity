@@ -58,7 +58,10 @@ public class ArduinoInterface : MonoBehaviour
         if (port != null)
         {
             port.DtrEnable = true;
-            port.Close();
+            if (port.IsOpen)
+            {
+                port.Close();
+            }
         }
     }
     public byte[] SendMessageReliable(byte[] message)
@@ -163,7 +166,13 @@ public class ArduinoInterface : MonoBehaviour
     }
     public int ReadEncoder(int interruptPin)
     {
-        return ParseInt(SendMessageReliable(new byte[2] {9, (byte)interruptPin}));
+        byte[] response = SendMessageReliable(new byte[2] { 9, (byte)interruptPin });
+        //DebugBytes(response);
+        return ParseInt(response);
+    }
+    public void ResetEncoder(int interruptPin)
+    {
+        SendMessageReliable(new byte[2] { 10, (byte)interruptPin });
     }
     private int ParseInt(byte[] response)
     {
@@ -182,5 +191,6 @@ public class ArduinoInterface : MonoBehaviour
         {
             msg += bytes[i].ToString() + " ";
         }
+        UnityEngine.Debug.Log(msg);
     }
 }

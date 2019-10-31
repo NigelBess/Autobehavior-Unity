@@ -16,6 +16,7 @@ public class WelcomeFields : InputFields
     private void Awake()
     {
         inputFields = new InputField[8] { mouseIDField, rigField, sessionField, numTrialsField, portField, naturalisticBackgroundField, rewardOnIncorrectField, saveDirectoryField };
+        fileName = Globals.mainMenuFieldsFileName;
         Load();
     }
     public override void Save()

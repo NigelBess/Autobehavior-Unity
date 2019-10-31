@@ -26,4 +26,8 @@ public class Keyboard : IODevice
     {
         return Input.GetKey(KeyCode.I);
     }
+    public override void Disconnect()
+    {
+        //pass
+    }
 }

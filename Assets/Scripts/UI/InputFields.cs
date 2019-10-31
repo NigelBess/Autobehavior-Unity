@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class InputFields : MonoBehaviour
 {
     protected InputField[] inputFields;
-    [SerializeField] private string fileName;
+    [SerializeField] protected string fileName;
     private DataLogger.Path path;
 
     void Awake()
@@ -34,7 +34,7 @@ public class InputFields : MonoBehaviour
         if (path == null) path = new DataLogger.Path(fileName);
         for (int i = 0; i < inputFields.Length; i++)
         {
-            DataLogger.Save(path, inputFields[i].text, i > 0);
+            DataLogger.Save(path, inputFields[i].text + ",", i > 0);
         }
     }
 }
