@@ -60,8 +60,7 @@ public static class Results
         //should only be called if the game is paused mid trial
 
         //do nothing if we havent started any trials
-        if (currentTrial < 0) return;
-
+        if (currentTrial < 0 || currentTrial>= trials.Length) return;
         trials[currentTrial] = new TrialData();//reset info about current trial
     }
     public static void LogSuccess(bool irSensorState)
