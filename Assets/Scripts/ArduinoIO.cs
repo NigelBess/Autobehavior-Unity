@@ -33,21 +33,21 @@ public class ArduinoIO : IODevice
     private const int rightServoClosedPos = 90;
 
     //after the servos close how much should they back off (in degrees)
-    private const int servoBackOff = 1;
+    private const int servoBackOff = 6;
     //reason for servoBackOff: when the servos open again, they tend to move a little bit in the wrong direction first. 
     //this causes the joystick to get bumped out of place. Backing off the servos mitigates this
 
     //how long do we expect it to take the servos to back off
-    private const float backOffTime = 0.1f;
+    private const float backOffTime = 0.2f;
 
     //joystick values below threshold will be ignored. This value should be set to the max expected reading while servos are closed
-    private const int joystickThreshold = 5;
+    private const int joystickThreshold = 15;
 
     //joystick saturates at this value. This should be set to the max value read by the joystick when servos are open
     private const int maxJoystickValue = 85;
 
     //how much time do we expect it to take for the servos to close
-    private const float servoCloseTime = 0.67f;
+    private const float servoMoveTime = 0.5f;
 
     //is the arduino connection established?
     private bool connected = false;
@@ -102,27 +102,25 @@ public class ArduinoIO : IODevice
     }
     private void PositionServos(int leftPos, int rightPos)
     {
-        PowerServos();
-        arduino.DigitalWrite(servoTransistorPin,1);
         arduino.WriteServo(leftServoPin, leftPos);
         arduino.WriteServo(rightServoPin, rightPos);
     }
-    void PowerServos()
+    void PowerServos(float time)
     {
         if (servoPowerOffRoutine != null) StopCoroutine(servoPowerOffRoutine);
         arduino.DigitalWrite(servoTransistorPin, 1);
-        servoPowerOffRoutine = WaitToPowerOffServos();
+        servoPowerOffRoutine = WaitToPowerOffServos(time);
         StartCoroutine(servoPowerOffRoutine);
     }
-    IEnumerator WaitToPowerOffServos()
+    IEnumerator WaitToPowerOffServos(float time)
     {
-        yield return new WaitForSeconds(servoCloseTime);
+        yield return new WaitForSeconds(time);
         arduino.DigitalWrite(servoTransistorPin, 0);
         servoPowerOffRoutine = null;
     }
-    IEnumerator WaitToResetEncoder()
+    IEnumerator WaitToResetEncoder(float time)
     {
-        yield return new WaitForSeconds(servoCloseTime);
+        yield return new WaitForSeconds(time);
         ResetEncoder();
     }
     public override void CloseServos()
@@ -131,24 +129,27 @@ public class ArduinoIO : IODevice
     }
     public  void CloseServos(bool resetEnc)
     {
+        
         PositionServos(leftServoClosedPos,rightServoClosedPos);
-        StartCoroutine(BackOffServos());
-        if(resetEnc)   StartCoroutine(WaitToResetEncoder());
+        PowerServos(servoMoveTime + backOffTime);
+        StartCoroutine(WaitToBackOffServos(servoMoveTime));
+        if(resetEnc)   StartCoroutine(WaitToResetEncoder(servoMoveTime + backOffTime));
     }
-    IEnumerator BackOffServos()
+    IEnumerator WaitToBackOffServos(float time)
     {
-        yield return new WaitForSeconds(servoCloseTime-backOffTime);
-        arduino.WriteServo(leftServoPin, leftServoClosedPos-servoBackOff);
-        arduino.WriteServo(rightServoPin, rightServoClosedPos+servoBackOff);
+        yield return new WaitForSeconds(time);
+        PositionServos(leftServoClosedPos - servoBackOff, rightServoClosedPos + servoBackOff);
 
     }
     public override void OpenServos()
     {
+        
         PositionServos(leftServoOpenPos,rightServoOpenPos);
+        PowerServos(servoMoveTime);
     }
     public override float EstimatedServoCloseTime()
     {
-        return servoCloseTime;
+        return servoMoveTime;
     }
     public override bool ReadIR()
     {

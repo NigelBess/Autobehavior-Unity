@@ -23,6 +23,7 @@ public class TestSceneManager : MonoBehaviour
     [SerializeField] private Text encoderCountText;
     [SerializeField] private GameObject interactables;
     [SerializeField] private Text servoStateText;
+    [SerializeField] private Text joystickText;
     private const float pauseForMessageSendTime = 0.1f;
     const int comFieldIndex = 4;
 
@@ -125,8 +126,11 @@ public class TestSceneManager : MonoBehaviour
         encoderCountText.text = io.ReadEncoder().ToString();
         tracker.AddCom();
 
+        joystickText.text = io.ReadJoystick().ToString("F2");
+        tracker.AddCom();
+
         //stress test
-        int stressTestsPerFrame = 5;
+        int stressTestsPerFrame = 4;
         for (int i = 0; i < stressTestsPerFrame; i++)
         {
             io.CheckConnection();
