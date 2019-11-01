@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.IO;
 public static class Results
 {
     private const string extension = "csv";
@@ -23,6 +23,7 @@ public static class Results
     }
     public static void CreateSaveFile(string directory, string mouseID, int sessionNum)
     {
+        
         System.DateTime date = System.DateTime.Now;
         string dateStr = date.Year + "-" + date.Month + "-" + date.Day;
         string name = "Unity_" + mouseID + "_"+ dateStr+ "_"+sessionNum;
@@ -30,6 +31,8 @@ public static class Results
     }
     public static void CreateSaveFile(string directory, string fileName)
     {
+        Debug.Log(directory);
+        if (!Directory.Exists(directory)) throw new System.Exception("Directory does not exist. Please choose a valid directory.");
         path = new DataLogger.Path(directory, fileName, extension);
         if(!path.Exists()) DataLogger.Save(path, "Response, Stimulus Position, Trial Start Time, Response Time, Correct?, IRSensorState, Opacity",true);
     }
@@ -39,6 +42,7 @@ public static class Results
     }
     private static TrialData ThisTrial()
     {
+        Debug.Log(currentTrial);
         return trials[currentTrial];
     }
     public static void StartTrial(int stimPosition, float opacity)

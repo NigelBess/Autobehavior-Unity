@@ -18,14 +18,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InputFields welcomeFields;
     [SerializeField] private Text welcomeErrorText;
     [SerializeField] private SoundMaker sound;
+    [SerializeField] private GameObject continueButton;
+    [SerializeField] private Text pauseMenuText;
     private bool selfEnabled = true;
     private int numTrials;
-    private int currentTrialNumber;
     private const float controlPauseTime = 1f;
     private const float successPauseTime = 2f;
     private const float failPauseTime = 4f;
     private const float timeOutTime = 10f;
     private bool waitingForIR;
+    private float startTime;
 
     private void Awake()
     {
@@ -42,7 +44,7 @@ public class GameManager : MonoBehaviour
 
             welcomeFields.Save();
             numTrials = int.Parse(SessionData.numTrials);
-            if (numTrials < 1) numTrials = 1;
+            if (numTrials < 1) throw new System.Exception("Invalid number of trials.");
             Results.Malloc(numTrials);
             Results.CreateSaveFile(SessionData.saveDirectory,SessionData.mouseID,int.Parse(SessionData.sessionNumber));
             bool natBackground = int.Parse(SessionData.naturalisticBackground) > 0;
@@ -58,6 +60,7 @@ public class GameManager : MonoBehaviour
                 arduinoIO.Connect(SessionData.port);
             }
 
+            startTime = Time.time;
             camControl.SetIODevice(io);
             io.CloseServos();
         }
@@ -84,6 +87,7 @@ public class GameManager : MonoBehaviour
             }
             return;
         }
+        if (!gratedCircle.gameObject.activeSelf) return;
         if(gratedCircle.AtCenter())
         {
             Success();
@@ -96,7 +100,7 @@ public class GameManager : MonoBehaviour
     private void WaitForIR()
     {
         waitingForIR = true;
-        failPanel.SetActive(false);
+        
     }
     private void WelcomeError(System.Exception e)
     {
@@ -108,9 +112,13 @@ public class GameManager : MonoBehaviour
     }
     public void Pause()
     {
+        Pause(true);
+    }
+    public void Pause(bool cancel)
+    {
         SetState(false);
         StopAllCoroutines();
-        Results.CancelTrial();
+        if(cancel) Results.CancelTrial();
         WaitForIR();
         cm.Pause();
         selfEnabled = false;
@@ -171,6 +179,7 @@ public class GameManager : MonoBehaviour
         StopAllCoroutines();
         camControl.SnapTo(gratedCircle.GetWorldPos());
         camControl.enabled = false;
+        io.GiveWater();
         io.CloseServos();
         Results.LogSuccess(io.ReadIR());
         DisableForSeconds(successPauseTime);
@@ -222,8 +231,24 @@ public class GameManager : MonoBehaviour
     {
         StopAllCoroutines();
         SetState(false);
-        
+        if (Results.CurrentTrialNumber() >= numTrials - 1)
+        {
+            EndGame();
+            return;
+        }
+        failPanel.SetActive(false);
         WaitForIR();
+    }
+    private void EndGame()
+    {
+        int time = (int)(Time.time - startTime);
+        int hours = time / 3600;
+        time -= hours * 3600;
+        int minutes = time / 60;
+        int seconds = time - minutes * 60;
+        Pause(false);
+        pauseMenuText.text = "Mouse " + SessionData.mouseID + " completed all trials in " + hours.ToString("00")+ ":" + minutes.ToString("00") + ":" +seconds.ToString("00");
+        continueButton.SetActive(false);
     }
     IEnumerator WaitForTimeOut()
     {

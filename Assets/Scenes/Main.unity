@@ -258,8 +258,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1411438115, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
       propertyPath: m_Text
-      value: "(Trials that did not time out) / (trials that timed out) \n\nThis only
-        includes trials where the mouse was in the viewport at the time of completion."
+      value: "(Trials that did not time out) / (All trials) \n\nThis only includes
+        trials where the mouse was in the viewport at the time of completion."
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
@@ -492,6 +492,8 @@ MonoBehaviour:
   welcomeFields: {fileID: 1420861715}
   welcomeErrorText: {fileID: 860562113}
   sound: {fileID: 54593457}
+  continueButton: {fileID: 1228475778}
+  pauseMenuText: {fileID: 367478794}
 --- !u!114 &54593452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1920,6 +1922,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1372e911ac03b44ca0c94517382587d, type: 3}
+--- !u!114 &367478794 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6547366309754321417, guid: 34216ffaea15c054fb63f7a91d3205f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 6547366310138859226}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &400812112
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2259,10 +2273,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1793295348, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 1411438115, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
       propertyPath: m_Text
-      value: "(Trials that did not time out) / (trials that timed out) \n\nThis includes
-        trials where the mouse was not in the viewport at the time of completion."
+      value: "(Trials that did not time out) / (All trials) \n\nThis includes trials
+        where the mouse was not in the viewport at the time of completion."
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
@@ -2969,6 +2987,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Session Field
       objectReference: {fileID: 0}
+    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
+        type: 3}
+      propertyPath: m_KeyboardType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
+        type: 3}
+      propertyPath: m_CharacterValidation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
+        type: 3}
+      propertyPath: m_ContentType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3203185104652302498, guid: b1372e911ac03b44ca0c94517382587d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3063,21 +3096,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
-        type: 3}
-      propertyPath: m_KeyboardType
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
-        type: 3}
-      propertyPath: m_CharacterValidation
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
-        type: 3}
-      propertyPath: m_ContentType
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6234609125965107648, guid: b1372e911ac03b44ca0c94517382587d,
         type: 3}
@@ -4586,7 +4604,7 @@ RectTransform:
   - {fileID: 1938242930}
   - {fileID: 9223135821368590229}
   m_Father: {fileID: 1533877033128968706}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -4867,6 +4885,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d199490a83bb2b844b9695cbf13b01ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1228475778 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1045493830488280625, guid: 438d0a8c507e44447a6a3a1ba110d44e,
+    type: 3}
+  m_PrefabInstance: {fileID: 9223135821368590228}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1238136239 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5220614699415331255, guid: 51c44708956a97243b06a2f493c31db3,
@@ -6481,11 +6505,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1793295348, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 60
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 1411438115, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
       propertyPath: m_Text
-      value: Total left bias over all trials. Trials that timed out are not counted.
+      value: Ratio of left responses (50% is ideal) over all trials. Trials that timed
+        out are not counted.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
@@ -7585,7 +7610,7 @@ RectTransform:
   - {fileID: 1518691391}
   - {fileID: 1450713496}
   m_Father: {fileID: 1533877033128968706}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7855,6 +7880,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: numTrialsField
       objectReference: {fileID: 0}
+    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
+        type: 3}
+      propertyPath: m_KeyboardType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
+        type: 3}
+      propertyPath: m_CharacterValidation
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
+        type: 3}
+      propertyPath: m_ContentType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3203185104652302498, guid: b1372e911ac03b44ca0c94517382587d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7949,21 +7989,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
-        type: 3}
-      propertyPath: m_KeyboardType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
-        type: 3}
-      propertyPath: m_CharacterValidation
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3255681866607031748, guid: b1372e911ac03b44ca0c94517382587d,
-        type: 3}
-      propertyPath: m_ContentType
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6234609125965107648, guid: b1372e911ac03b44ca0c94517382587d,
         type: 3}
@@ -8241,6 +8266,10 @@ PrefabInstance:
     - target: {fileID: 2096457581533296797, guid: 3c1872163423e4542817ba5d47b231de,
         type: 3}
       propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793295347, guid: 3c1872163423e4542817ba5d47b231de, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -9445,7 +9474,7 @@ PrefabInstance:
     - target: {fileID: 6547366309754321416, guid: 34216ffaea15c054fb63f7a91d3205f6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6547366309754321416, guid: 34216ffaea15c054fb63f7a91d3205f6,
         type: 3}
@@ -9475,12 +9504,12 @@ PrefabInstance:
     - target: {fileID: 6547366309754321416, guid: 34216ffaea15c054fb63f7a91d3205f6,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 6547366309754321416, guid: 34216ffaea15c054fb63f7a91d3205f6,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6547366309754321416, guid: 34216ffaea15c054fb63f7a91d3205f6,
         type: 3}
@@ -9957,6 +9986,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Resume Button Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 1045493830488280625, guid: 438d0a8c507e44447a6a3a1ba110d44e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1045493830488280624, guid: 438d0a8c507e44447a6a3a1ba110d44e,
         type: 3}

@@ -18,7 +18,7 @@ public class ArduinoIO : IODevice
     private const int leftServoPin = 10;
     private const int rightServoPin = 9;
 
-    private const float waterGiveTime = 0.1f; 
+    private const float waterGiveTime = 0.06f; 
 
     private const float lickMeterVoltageDelta = 1f;//minimum expected change in voltage on a lick
     private float lickMeterExpectedVoltage;//expected voltage read by lickmeter when mouse is not licking (calibrated on start)
@@ -177,7 +177,13 @@ public class ArduinoIO : IODevice
     }
     public override void GiveWater()
     {
-        //stub
+        OpenSolenoid();
+        StartCoroutine(WaitToCloseSolenoid());
+    }
+    IEnumerator WaitToCloseSolenoid()
+    {
+        yield return new WaitForSeconds(waterGiveTime);
+        CloseSolenoid();
     }
     public void OpenSolenoid()
     {

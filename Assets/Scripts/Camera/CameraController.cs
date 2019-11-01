@@ -8,7 +8,7 @@ public class CameraController : IOInteractor
     private void Update()
     {
         if (io == null) return;
-        transform.Rotate(Vector3.up, speed * Time.deltaTime * io.ReadJoystick());
+        transform.Rotate(Vector3.up, -speed * Time.deltaTime * io.ReadJoystick());
     }
     
     public float GetSpeed()
