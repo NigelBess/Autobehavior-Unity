@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Keyboard : IODevice
 {
-    public override int ReadJoystick()
+    public override float ReadJoystick()
     {
-        if (Input.GetKey(KeyCode.LeftArrow)) return -1;
-        if (Input.GetKey(KeyCode.RightArrow)) return 1;
+        if (Input.GetKey(KeyCode.LeftArrow)) return -1f;
+        if (Input.GetKey(KeyCode.RightArrow)) return 1f;
         return 0;
     }
     public override float EstimatedServoCloseTime()
@@ -27,6 +27,10 @@ public class Keyboard : IODevice
         return Input.GetKey(KeyCode.I);
     }
     public override void Disconnect()
+    {
+        //pass
+    }
+    public override void GiveWater()
     {
         //pass
     }

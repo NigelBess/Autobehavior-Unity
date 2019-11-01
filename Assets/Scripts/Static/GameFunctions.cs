@@ -40,4 +40,14 @@ public class GameFunctions : MonoBehaviour
         if (val) return 1;
         return 0;
     }
+    public static int Sign(float val)
+    {
+        if (val < 0) return -1;
+        if (val > 0) return 1;
+        return 0;
+    }
+    public static int Sign(int val)
+    {
+        return Sign((float)val);
+    }
 }

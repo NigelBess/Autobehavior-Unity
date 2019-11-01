@@ -22,6 +22,7 @@ public class TestSceneManager : MonoBehaviour
     [SerializeField] private Text servoButtonText;
     [SerializeField] private Text encoderCountText;
     [SerializeField] private GameObject interactables;
+    [SerializeField] private Text servoStateText;
     private const float pauseForMessageSendTime = 0.1f;
     const int comFieldIndex = 4;
 
@@ -70,7 +71,8 @@ public class TestSceneManager : MonoBehaviour
         }
  
         Connected(true);
-        OpenServos();
+        io.CloseServos();
+        ResetServoButton(false);
         responseText.SetText("Connected successfully.",Color.green);
     }
     public void Disconnect()
@@ -166,7 +168,7 @@ public class TestSceneManager : MonoBehaviour
             }
             else
             {
-                io.CloseServosNoReset();
+                io.CloseServos(false);
                 responseText.SetText("Servos closed.");
             }
 
@@ -184,10 +186,12 @@ public class TestSceneManager : MonoBehaviour
         if (open)
         {
             servoButtonText.text = "Close Servos";
+            servoStateText.text = "Open";
             servoButton.onClick.AddListener(delegate { CloseServos(); });
         } else
         {
             servoButtonText.text = "Open Servos";
+            servoStateText.text = "Closed";
             servoButton.onClick.AddListener(delegate { OpenServos(); });
         }
     }
@@ -202,5 +206,17 @@ public class TestSceneManager : MonoBehaviour
         yield return new WaitForSeconds(pauseForMessageSendTime);
         io.Disconnect();
         SceneManager.LoadScene("Main", 0);
+    }
+    public void OpenSolenoid()
+    {
+        io.OpenSolenoid();
+        tracker.AddCom();
+        responseText.SetText("Opened solenoid.");
+    }
+    public void CloseSolenoid()
+    {
+        io.CloseSolenoid();
+        tracker.AddCom();
+        responseText.SetText("Closed solenoid.");
     }
 }

@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
             }
 
             camControl.SetIODevice(io);
+            io.CloseServos();
         }
         catch (System.Exception e)
         {
@@ -151,6 +152,7 @@ public class GameManager : MonoBehaviour
         if (running)
         {
             DisableForSeconds(camControl, controlPauseTime + io.EstimatedServoCloseTime());
+            StartCoroutine(WaitToOpenServos(controlPauseTime));
         }
         else
         {
@@ -158,6 +160,11 @@ public class GameManager : MonoBehaviour
         }
         gratedCircle.gameObject.SetActive(running);
 
+    }
+    IEnumerator WaitToOpenServos(float time)
+    {
+        yield return new WaitForSeconds(time);
+        io.OpenServos();
     }
     private void Success()
     {

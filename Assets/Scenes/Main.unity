@@ -1468,7 +1468,7 @@ PrefabInstance:
     - target: {fileID: 6547366309754321417, guid: 34216ffaea15c054fb63f7a91d3205f6,
         type: 3}
       propertyPath: m_Text
-      value: 'Software Version: 0.1
+      value: 'Software Version: 1.0
 
         PCB: Gen5'
       objectReference: {fileID: 0}
@@ -3353,6 +3353,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1045493828812535373, guid: 438d0a8c507e44447a6a3a1ba110d44e,
+        type: 3}
+      propertyPath: m_Text
+      value: "Troubleshoot \nHardware"
+      objectReference: {fileID: 0}
     - target: {fileID: 1045493830488280627, guid: 438d0a8c507e44447a6a3a1ba110d44e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -3382,11 +3387,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.r
       value: 0.6509804
-      objectReference: {fileID: 0}
-    - target: {fileID: 1045493828812535373, guid: 438d0a8c507e44447a6a3a1ba110d44e,
-        type: 3}
-      propertyPath: m_Text
-      value: "Troubleshoot \nHardware"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 438d0a8c507e44447a6a3a1ba110d44e, type: 3}
@@ -6099,6 +6099,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1045493828812535373, guid: 438d0a8c507e44447a6a3a1ba110d44e,
+        type: 3}
+      propertyPath: m_Text
+      value: Start
+      objectReference: {fileID: 0}
     - target: {fileID: 1045493830488280627, guid: 438d0a8c507e44447a6a3a1ba110d44e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -6123,11 +6128,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: StartGame
-      objectReference: {fileID: 0}
-    - target: {fileID: 1045493828812535373, guid: 438d0a8c507e44447a6a3a1ba110d44e,
-        type: 3}
-      propertyPath: m_Text
-      value: Start
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 438d0a8c507e44447a6a3a1ba110d44e, type: 3}
@@ -7790,6 +7790,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1045493828812535373, guid: 438d0a8c507e44447a6a3a1ba110d44e,
+        type: 3}
+      propertyPath: m_Text
+      value: Main Menu
+      objectReference: {fileID: 0}
     - target: {fileID: 1045493830488280627, guid: 438d0a8c507e44447a6a3a1ba110d44e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -7829,11 +7834,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0.0388433
-      objectReference: {fileID: 0}
-    - target: {fileID: 1045493828812535373, guid: 438d0a8c507e44447a6a3a1ba110d44e,
-        type: 3}
-      propertyPath: m_Text
-      value: Main Menu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 438d0a8c507e44447a6a3a1ba110d44e, type: 3}
@@ -8577,6 +8577,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1045493828812535373, guid: 438d0a8c507e44447a6a3a1ba110d44e,
+        type: 3}
+      propertyPath: m_Text
+      value: Quit
+      objectReference: {fileID: 0}
     - target: {fileID: 1045493830488280627, guid: 438d0a8c507e44447a6a3a1ba110d44e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -8601,11 +8606,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0.0388433
-      objectReference: {fileID: 0}
-    - target: {fileID: 1045493828812535373, guid: 438d0a8c507e44447a6a3a1ba110d44e,
-        type: 3}
-      propertyPath: m_Text
-      value: Quit
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 438d0a8c507e44447a6a3a1ba110d44e, type: 3}
@@ -10028,6 +10028,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1045493828812535373, guid: 438d0a8c507e44447a6a3a1ba110d44e,
+        type: 3}
+      propertyPath: m_Text
+      value: Resume
+      objectReference: {fileID: 0}
     - target: {fileID: 1045493830488280627, guid: 438d0a8c507e44447a6a3a1ba110d44e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -10051,11 +10056,6 @@ PrefabInstance:
     - target: {fileID: 1045493830488280627, guid: 438d0a8c507e44447a6a3a1ba110d44e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Resume
-      objectReference: {fileID: 0}
-    - target: {fileID: 1045493828812535373, guid: 438d0a8c507e44447a6a3a1ba110d44e,
-        type: 3}
-      propertyPath: m_Text
       value: Resume
       objectReference: {fileID: 0}
     m_RemovedComponents: []
