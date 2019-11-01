@@ -31,7 +31,6 @@ public static class Results
     }
     public static void CreateSaveFile(string directory, string fileName)
     {
-        Debug.Log(directory);
         if (!Directory.Exists(directory)) throw new System.Exception("Directory does not exist. Please choose a valid directory.");
         path = new DataLogger.Path(directory, fileName, extension);
         if(!path.Exists()) DataLogger.Save(path, "Response, Stimulus Position, Trial Start Time, Response Time, Correct?, IRSensorState, Opacity",true);

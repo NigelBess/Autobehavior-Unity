@@ -116,6 +116,7 @@ public class GameManager : MonoBehaviour
     }
     public void Pause(bool cancel)
     {
+        io.CloseServos();
         SetState(false);
         StopAllCoroutines();
         if(cancel) Results.CancelTrial();
