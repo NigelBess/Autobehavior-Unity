@@ -24,6 +24,10 @@ public class CanvasManager : MonoBehaviour
     {
         Open(3);
     }
+    public void DevMode()
+    {
+        Open(4);
+    }
     private void Open(int next)
     {
         if (index < canvasSequence.Length - 1)

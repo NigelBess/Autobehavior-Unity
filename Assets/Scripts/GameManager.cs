@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject coverPanel;
     [SerializeField] private GameObject failPanel;
     [SerializeField] private GameObject environment;
+    [SerializeField] private Text devModeText;
     private IODevice io;
     [SerializeField] private CanvasManager cm;
     [SerializeField] private InputFields welcomeFields;
@@ -37,7 +38,7 @@ public class GameManager : MonoBehaviour
         SetState(false);
         selfEnabled = false;
     }
-    public void StartGame()
+    public void TryToStartGame()
     {
         try
         {
@@ -50,26 +51,36 @@ public class GameManager : MonoBehaviour
             bool natBackground = int.Parse(SessionData.naturalisticBackground) > 0;
             coverPanel.SetActive(!natBackground);
             environment.SetActive(natBackground);
-            if (SessionData.mouseID == "0")
+            if (SessionData.mouseID.Equals("dev",System.StringComparison.OrdinalIgnoreCase))
             {
                 io = keyboard;
+                camControl.SetIODevice(io);
+                devModeText.text = "You have entered developer mode by setting the mouse ID to " + SessionData.mouseID + ". Do you want to continue?";
+                cm.DevMode();
+                return;
             }
             else
             {
                 io = arduinoIO as IODevice;
+                camControl.SetIODevice(io);
                 arduinoIO.Connect(SessionData.port);
             }
 
-            startTime = Time.time;
-            camControl.SetIODevice(io);
-            io.CloseServos();
+
+            StartGame();
         }
         catch (System.Exception e)
         {
             WelcomeError(e);
             return;
         }
-
+        StartGame();
+        
+    }
+    public void StartGame()
+    {
+        startTime = Time.time;
+        io.CloseServos();
         cm.HUD();
         SetState(false);
         WaitForIR();
@@ -232,7 +243,7 @@ public class GameManager : MonoBehaviour
     {
         StopAllCoroutines();
         SetState(false);
-        if (Results.CurrentTrialNumber() >= numTrials - 1)
+        if (Results.CurrentTrialNumber() >= numTrials)
         {
             EndGame();
             return;

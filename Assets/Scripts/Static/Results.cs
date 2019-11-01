@@ -41,7 +41,6 @@ public static class Results
     }
     private static TrialData ThisTrial()
     {
-        Debug.Log(currentTrial);
         return trials[currentTrial];
     }
     public static void StartTrial(int stimPosition, float opacity)
