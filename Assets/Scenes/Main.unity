@@ -1506,7 +1506,7 @@ PrefabInstance:
     - target: {fileID: 6547366309754321417, guid: 34216ffaea15c054fb63f7a91d3205f6,
         type: 3}
       propertyPath: m_Text
-      value: 'Software Version: 1.0
+      value: 'Software Version: 1.1
 
         PCB: Gen5'
       objectReference: {fileID: 0}
@@ -4176,7 +4176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19604921715b4c4086ad5450b69935a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
+  speed: 30
 --- !u!82 &963194230
 AudioSource:
   m_ObjectHideFlags: 0

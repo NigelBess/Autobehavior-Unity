@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AnimatedImage : MonoBehaviour
+public class AnimatedImage : MonoBehaviour//used to create a looping image animation out of a series of sprites
 {
     [SerializeField] private Sprite[] images;
     [SerializeField] private int framesPerSecond = 30;

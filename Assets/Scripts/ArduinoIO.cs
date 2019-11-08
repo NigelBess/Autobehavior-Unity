@@ -189,7 +189,7 @@ public class ArduinoIO : IODevice
     {
         arduino.DigitalWrite(solenoidTransistorPin,1);
     }
-    public void CloseSolenoid()
+    public override void CloseSolenoid()
     {
         arduino.DigitalWrite(solenoidTransistorPin,0);
     }

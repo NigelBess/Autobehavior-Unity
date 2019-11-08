@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CanvasManager : MonoBehaviour
+public class CanvasManager : MonoBehaviour//switches between ui canvases
 {
     [SerializeField] private GameObject[] menus;
     private int[] canvasSequence = new int[4] {0,0,0,0};

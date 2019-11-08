@@ -34,4 +34,8 @@ public class Keyboard : IODevice
     {
         //pass
     }
+    public override void CloseSolenoid()
+    {
+       //pass
+    }
 }
