@@ -21,7 +21,7 @@ public class GratedCircle : MonoBehaviour
     }
     public void Reset(int side)
     {
-        transform.position = new Vector3(Screen.width *(1 + Mathf.Sign(side)/2)/2,Screen.height/2,0);//sets position so that distance to fail and distance to success are equal
+        transform.position = new Vector3(Screen.width *(1 + Mathf.Sign(side)/2)/2 - Mathf.Sign(side)*rt.rect.width/4,Screen.height/2,0);//sets position so that distance to fail and distance to success are equal
         worldPoint = GetWorldPoint();
         originalHeight = GetWorldHeight();
     }
@@ -55,8 +55,8 @@ public class GratedCircle : MonoBehaviour
     }
     public bool OutOfBounds()//is the stimulus touching the edge of the screen?
     {
-        if ((transform.position.x + rt.rect.width) > Screen.width) return true;
-        if ((transform.position.x - rt.rect.width) < 0) return true;
+        if ((transform.position.x + rt.rect.width/2) > Screen.width) return true;
+        if ((transform.position.x - rt.rect.width/2) < 0) return true;
         return false;
     }
     public Vector3 GetWorldPos()

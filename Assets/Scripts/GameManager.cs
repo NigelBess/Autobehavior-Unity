@@ -278,6 +278,7 @@ public class GameManager : MonoBehaviour//this class handles the game logic
         StopAllCoroutines();//stop the timeout
         sound.Fail();//play the fail noise
         failPanel.SetActive(true);//show the black screen
+        targetRing.SetActive(false);//dont show the target ring
         io.CloseServos();
         camControl.enabled = false;//disable control of the  camera
         DisableForSeconds(failPauseTime);//disable win/fail condition checking
