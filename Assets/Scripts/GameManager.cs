@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour//this class handles the game logic
 {
     [SerializeField] private CameraController camControl; // handles camera motion
     [SerializeField] private GratedCircle gratedCircle;
-
+    [SerializeField] private GameObject targetRingParent;//parent object of target ring. setting this inactive disables the target ring as a whole
+    [SerializeField] private GameObject targetRing; //this is the actual target ring and gets disabled/enabled on trial start/end
     private IODevice io; // holds the type of IO device that we will use
     [SerializeField] private IODevice keyboard;// the keyboard is used for dev mode (sending keyboard commands to game)
     [SerializeField] private ArduinoIO arduinoIO; // the arduinoIO is used for hardware control (mouse controls game)
@@ -68,6 +69,7 @@ public class GameManager : MonoBehaviour//this class handles the game logic
 
             //will we use the naturalistic background or not?
             bool natBackground = int.Parse(SessionData.naturalisticBackground) > 0;
+            targetRingParent.SetActive(!natBackground);//use the green circle if no natural background
             coverPanel.SetActive(!natBackground);//covers screen if no nat bg
             environment.SetActive(natBackground);//enable nat bg if applicable
             gratedCircle.SetScalingMode(natBackground);// if we are using the nat bg we want the grated circle to scale as if it is part of the environment
@@ -217,6 +219,7 @@ public class GameManager : MonoBehaviour//this class handles the game logic
             camControl.enabled = false;//disable control of the camera via joystick
         }
         gratedCircle.gameObject.SetActive(running);//show the grated circle if the game is running
+        targetRing.SetActive(running);
 
     }
     IEnumerator WaitToOpenServos(float time)
