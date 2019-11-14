@@ -71,7 +71,16 @@ public class GameManager : MonoBehaviour//this class handles the game logic
             bool natBackground = int.Parse(SessionData.naturalisticBackground) > 0;
             targetRingParent.SetActive(!natBackground);//use the green circle if no natural background
             coverPanel.SetActive(!natBackground);//covers screen if no nat bg
-            environment.SetActive(natBackground);//enable nat bg if applicable
+
+            // only enable nat bg if applicable
+            if (!natBackground)
+            {
+                Destroy(environment);
+            }
+            else
+            {
+                environment.SetActive(true);
+            }
             gratedCircle.SetScalingMode(natBackground);// if we are using the nat bg we want the grated circle to scale as if it is part of the environment
 
             if (SessionData.mouseID.Equals("dev",System.StringComparison.OrdinalIgnoreCase))// allow user to enter devMode (keyboard inputs) by setting the mouseID todev
