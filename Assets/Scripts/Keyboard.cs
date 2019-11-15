@@ -6,8 +6,8 @@ public class Keyboard : IODevice
 {
     public override float ReadJoystick()
     {
-        if (Input.GetKey(KeyCode.LeftArrow)) return -1f;
-        if (Input.GetKey(KeyCode.RightArrow)) return 1f;
+        if (Input.GetKey(KeyCode.LeftArrow)) return 1f;
+        if (Input.GetKey(KeyCode.RightArrow)) return -1f;
         return 0;
     }
     public override float EstimatedServoCloseTime()
