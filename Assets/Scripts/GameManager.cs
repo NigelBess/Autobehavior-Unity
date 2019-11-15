@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour//this class handles the game logic
 
         //here we check for mouse success/failure. If the grated circle is not in the active, ignore its position
         if (!gratedCircle.gameObject.activeSelf) return;
-        if(gratedCircle.AtCenter())
+        if(gratedCircle.AtCenter() || gratedCircle.PastCenter())
         {
             Success();
         }

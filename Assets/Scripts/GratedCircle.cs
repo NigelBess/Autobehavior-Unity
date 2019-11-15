@@ -10,6 +10,7 @@ public class GratedCircle : MonoBehaviour
     RectTransform rt;
     private Vector3 worldPoint;//simulated 3d point in space where the grated circle exists
     private float originalHeight;//world space height if the grated circle was at the world point
+    private int resetSide = 0;
     private void Awake()
     {
         rt = GetComponent<RectTransform>();
@@ -21,6 +22,8 @@ public class GratedCircle : MonoBehaviour
     }
     public void Reset(int side)
     {
+        side = (int)Mathf.Sign(side);
+        resetSide = side;
         transform.position = new Vector3(Screen.width *(1 + Mathf.Sign(side)/2)/2 - Mathf.Sign(side)*rt.rect.width/4,Screen.height/2,0);//sets position so that distance to fail and distance to success are equal
         worldPoint = GetWorldPoint();
         originalHeight = GetWorldHeight();
@@ -52,6 +55,10 @@ public class GratedCircle : MonoBehaviour
     public bool AtCenter()//is the stimulus at the position where the mouse has succeeded?
     {
         return Mathf.Abs((transform.position.x - Screen.width / 2)) < pixelThresholdFromCenter;
+    }
+    public bool PastCenter()
+    {
+        return Mathf.Sign(transform.position.x - Screen.width / 2) != Mathf.Sign(resetSide);
     }
     public bool OutOfBounds()//is the stimulus touching the edge of the screen?
     {
